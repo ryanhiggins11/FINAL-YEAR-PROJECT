@@ -25,14 +25,10 @@ class SecondFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Clock-In button, goes to Clock-Out Page
         view.findViewById<Button>(R.id.button_clockin).setOnClickListener {
-            //findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+            findNavController().navigate(R.id.action_SecondFragment_to_ThirdFragment)
             Toast.makeText(context,"You have clocked in",Toast.LENGTH_SHORT).show()
-        }
-
-        view.findViewById<Button>(R.id.button_clockout).setOnClickListener {
-            //findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
-            Toast.makeText(context,"You have clocked out",Toast.LENGTH_SHORT).show()
         }
     }
 }
