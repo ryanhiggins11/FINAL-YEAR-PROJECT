@@ -9,8 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Biztech">
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".SplashScreenActivity"
+        <activity
+            android:name=".EmployeeActivity"
+            android:label="@string/title_activity_employee"></activity>
+        <activity android:name=".EmployeeFragment" />
+        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".SplashScreenActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

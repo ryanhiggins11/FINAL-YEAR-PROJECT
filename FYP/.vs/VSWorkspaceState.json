@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\app",
+    "\\app\\src",
+    "\\app\\src\\androidTest",
+    "\\app\\src\\main",
+    "\\app\\src\\main\\java",
+    "\\app\\src\\main\\java\\com",
+    "\\app\\src\\main\\java\\com\\gmit",
+    "\\app\\src\\main\\java\\com\\gmit\\biztech",
+    "\\gradle"
+  ],
+  "SelectedNode": "\\app\\src\\main\\java\\com\\gmit\\biztech\\MainActivity.kt",
+  "PreviewInSolutionExplorer": false
+}
