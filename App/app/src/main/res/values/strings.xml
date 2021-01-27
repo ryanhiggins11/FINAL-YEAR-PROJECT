@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Final Year Project</string>
+    <string name="app_name">Biztech - Business Solutions</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -9,7 +9,7 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="getstarted">Get Started</string>
+    <string name="signin">Sign-In</string>
     <string name="clockIn">Clock In</string>
     <string name="biztech">BizTech</string>
     <string name="welcome">Welcome</string>
