@@ -9,10 +9,10 @@
     <!-- Get Started Button -->
     <Button
         android:id="@+id/button_first"
-        android:layout_width="94dp"
-        android:layout_height="51dp"
+        android:layout_width="138dp"
+        android:layout_height="60dp"
         android:layout_marginBottom="100dp"
-        android:text="@string/signin"
+        android:text="@string/getstarted"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

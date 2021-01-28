@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 
+
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,10 +15,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
 
-//        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-//            Snackbar.make(view, "Message", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null).show()
-//        }
+
+       findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
+            Snackbar.make(view, "Message", Snackbar.LENGTH_LONG)
+                   .setAction("Action", null).show()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
