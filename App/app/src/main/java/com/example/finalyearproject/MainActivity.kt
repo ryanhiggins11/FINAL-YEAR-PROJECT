@@ -15,11 +15,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
 
+<<<<<<< HEAD
 
        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
             Snackbar.make(view, "Message", Snackbar.LENGTH_LONG)
                    .setAction("Action", null).show()
         }
+=======
+>>>>>>> 179ea608e34f8662db59835279e4c4f6171898ba
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
