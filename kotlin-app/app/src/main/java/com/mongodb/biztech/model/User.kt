@@ -1,4 +1,4 @@
-package com.mongodb.tasktracker.model
+package com.mongodb.biztech.model
 
 import io.realm.RealmList;
 import io.realm.RealmObject;

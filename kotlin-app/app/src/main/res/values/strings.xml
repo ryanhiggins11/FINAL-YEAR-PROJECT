@@ -7,5 +7,7 @@
     <string name="logout">Log Out</string>
     <string name="getstarted">Get Started</string>
     <string name="clockIn">Clock In</string>
+    <string name="toBreak">Break</string>
     <string name="clockOut">Clock Out</string>
+    <string name="welcome">Welcome!</string>
 </resources>
