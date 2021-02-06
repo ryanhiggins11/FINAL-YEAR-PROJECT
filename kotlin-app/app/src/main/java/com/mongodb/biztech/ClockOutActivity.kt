@@ -22,4 +22,9 @@ class ClockOutActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+    override fun onBackPressed() {
+        // Disable going back to ClockInActivity
+        moveTaskToBack(true)
+    }
 }

@@ -1,12 +1,15 @@
 package com.mongodb.biztech
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
+import com.mongodb.biztech.model.Employee
+import io.realm.Realm
+import java.sql.Time
 
 /*
 * ClockInActivity: allows an employee to clock in.
@@ -28,7 +31,7 @@ class ClockInActivity : AppCompatActivity() {
         setContentView(R.layout.activity_clock_in)
 
         val button = findViewById<Button>(R.id.button_clockin)
-        button.setOnClickListener{
+        button.setOnClickListener {
             val intent = Intent(this@ClockInActivity, ClockOutActivity::class.java)
             startActivity(intent)
         }
@@ -37,6 +40,11 @@ class ClockInActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.activity_task_menu, menu)
         return true
+    }
+
+    override fun onBackPressed() {
+        // Disable going back to LoginActivity and ClockOutActivity
+        moveTaskToBack(true)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -58,4 +66,5 @@ class ClockInActivity : AppCompatActivity() {
             }
         }
     }
+
 }
