@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mongodb.biztech">
 
+    <supports-screens
+        android:smallScreens="true"
+        android:largeScreens="true"
+        android:xlargeScreens="true"
+        android:normalScreens="true" />
+
     <application
         android:name=".RealmApp"
         android:allowBackup="true"
