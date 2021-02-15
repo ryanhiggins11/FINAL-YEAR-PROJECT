@@ -94,24 +94,24 @@ class ClockInActivity : AppCompatActivity() {
 
     // Finds the location of the employee using the FusedLocationProviderClient
     private fun getLastLocation() {
-        // Permission checks
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        )
+        // Permission check
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            return
+        }
 
         // Find last location
         fusedLocationClient?.lastLocation!!.addOnCompleteListener(this) { task ->
             if (task.isSuccessful && task.result != null) {
                 lastLocation = task.result
 
+                val latLocation = (lastLocation)!!.latitude.roundToInt()
+                val longLocation = (lastLocation)!!.longitude.roundToInt()
+
                 // Set workplace location here, will disable clock in button if employee not at work
-                button_clockin.isEnabled =
-                    (lastLocation)!!.latitude.roundToInt() == 54 && (lastLocation)!!.longitude.roundToInt() == -9
+                button_clockin.isEnabled = latLocation in 50..54 && longLocation in -7 downTo -9
             }
             else {
                 Log.w(TAG, "getLastLocation:exception", task.exception)
