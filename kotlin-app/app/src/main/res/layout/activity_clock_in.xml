@@ -8,30 +8,31 @@
 
     <!-- Clock in -->
 
+
     <TextView
         android:id="@+id/ClockinTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="53dp"
-        android:layout_marginEnd="21dp"
-        android:layout_marginBottom="35dp"
+        android:layout_width="281dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="65dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="65dp"
+        android:layout_marginBottom="90dp"
         android:text="Welcome to Biztech"
         android:textColor="@color/black"
-        android:textSize="42dp"
+        android:textSize="30dp"
         app:layout_constraintBottom_toTopOf="@+id/imageView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/clockinSubTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="13dp"
-        android:layout_marginBottom="20dp"
+        android:layout_width="355dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="24dp"
         android:text="Starting a shift or returning from break?"
         android:textColor="@color/black"
         android:textSize="20dp"
@@ -41,10 +42,10 @@
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="193dp"
-        android:layout_height="212dp"
-        android:layout_marginStart="109dp"
-        android:layout_marginEnd="109dp"
+        android:layout_width="224dp"
+        android:layout_height="210dp"
+        android:layout_marginStart="93dp"
+        android:layout_marginEnd="94dp"
         android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toTopOf="@+id/clockinSubTitle"
         app:layout_constraintEnd_toEndOf="parent"
@@ -54,24 +55,23 @@
 
     <TextView
         android:id="@+id/clockinInstructions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginBottom="60dp"
+        android:layout_width="249dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="81dp"
+        android:layout_marginEnd="81dp"
+        android:layout_marginBottom="36dp"
         android:text="Simply clock-in below"
         android:textColor="@color/black"
-        android:textSize="22dp"
+        android:textSize="25dp"
         app:layout_constraintBottom_toTopOf="@+id/button_clockin"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button_clockin"
         android:layout_width="138dp"
         android:layout_height="60dp"
-        android:layout_marginBottom="116dp"
+        android:layout_marginBottom="60dp"
         android:text="@string/clockIn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -89,14 +89,4 @@
         app:layout_constraintHorizontal_bias="0.776"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/longitudeText"
-        android:layout_width="37dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="68dp"
-        android:textIsSelectable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.08"
-        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

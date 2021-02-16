@@ -111,7 +111,7 @@ class ClockInActivity : AppCompatActivity() {
                 val longLocation = (lastLocation)!!.longitude.roundToInt()
 
                 // Set workplace location here, will disable clock in button if employee not at work
-                button_clockin.isEnabled = latLocation in 50..54 && longLocation in -7 downTo -9
+                button_clockin.isEnabled = latLocation in 10..11 && longLocation in -10 downTo -13
             }
             else {
                 Log.w(TAG, "getLastLocation:exception", task.exception)
