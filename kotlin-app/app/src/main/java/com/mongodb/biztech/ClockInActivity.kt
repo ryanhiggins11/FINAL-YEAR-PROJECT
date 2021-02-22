@@ -1,21 +1,20 @@
 package com.mongodb.biztech
 
-import android.content.Intent
-import android.os.Bundle
-import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
 import android.Manifest
-import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
 import kotlinx.android.synthetic.main.activity_clock_in.*
@@ -28,8 +27,9 @@ class ClockInActivity : AppCompatActivity() {
     private var user: io.realm.mongodb.User? = null
     private var fusedLocationClient: FusedLocationProviderClient? = null
     private var lastLocation: Location? = null
+    private lateinit var locationRequest: LocationRequest
 
-    override fun onStart() {
+    public override fun onStart() {
         super.onStart()
         user = realmApp.currentUser()
         if (user == null) {
@@ -41,8 +41,7 @@ class ClockInActivity : AppCompatActivity() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions()
             }
-        }
-        else {
+        } else {
             getLastLocation()
         }
     }
@@ -52,6 +51,12 @@ class ClockInActivity : AppCompatActivity() {
         setContentView(R.layout.activity_clock_in)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        locationRequest = LocationRequest.create();
+        // The priority of the request
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY;
+        // Set the desired interval for active location updates, in milliseconds
+        locationRequest.interval = 20 * 1000;
 
         val button = findViewById<Button>(R.id.button_clockin)
 
@@ -92,17 +97,21 @@ class ClockInActivity : AppCompatActivity() {
         }
     }
 
+    // https://www.tutorialspoint.com/how-to-track-the-current-location-latitude-and-longitude-in-an-android-device-using-kotlin
     // Finds the location of the employee using the FusedLocationProviderClient
     private fun getLastLocation() {
-        // Permission check
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
+        // Check permission
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             return
         }
 
-        // Find last location
         fusedLocationClient?.lastLocation!!.addOnCompleteListener(this) { task ->
             if (task.isSuccessful && task.result != null) {
                 lastLocation = task.result
@@ -111,21 +120,38 @@ class ClockInActivity : AppCompatActivity() {
                 val longLocation = (lastLocation)!!.longitude.roundToInt()
 
                 // Set workplace location here, will disable clock in button if employee not at work
-                button_clockin.isEnabled = latLocation in 10..11 && longLocation in -10 downTo -13
-            }
-            else {
+                button_clockin.isEnabled = latLocation in 50..55 && longLocation in -5 downTo -15
+            } else {
                 Log.w(TAG, "getLastLocation:exception", task.exception)
-                Toast.makeText(this@ClockInActivity,
-                    "No location detected. Make sure location is enabled on the device.", Toast.LENGTH_LONG)
+                showMessage("No location detected. Make sure location is enabled on the device.")
+
+                // Disable clock in button if location is not turned on
+                button_clockin.isEnabled = false
             }
         }
+    }
+
+    // Provides toast notification to employee depending on method
+    private fun showMessage(string: String) {
+        val container = findViewById<View>(R.id.linearLayout)
+        if (container != null) {
+            Toast.makeText(this@ClockInActivity, string, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    // Shows employee some options to select, alongside a toast notification
+    private fun showSnackBar(
+        mainTextStringId: String, actionStringId: String,
+        listener: View.OnClickListener
+    ) {
+        Toast.makeText(this@ClockInActivity, mainTextStringId, Toast.LENGTH_LONG).show()
     }
 
     // Check if permissions have been granted by employee
     private fun checkPermissions(): Boolean {
         val permissionState = ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
+            this,
+            Manifest.permission.ACCESS_COARSE_LOCATION
         )
         return permissionState == PackageManager.PERMISSION_GRANTED
     }
@@ -133,35 +159,38 @@ class ClockInActivity : AppCompatActivity() {
     // Requests permissions to be granted to this application
     private fun startLocationPermissionRequest() {
         ActivityCompat.requestPermissions(
-                this@ClockInActivity,
-                arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
-                REQUEST_PERMISSIONS_REQUEST_CODE
+            this@ClockInActivity,
+            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+            REQUEST_PERMISSIONS_REQUEST_CODE
         )
     }
 
     // Request use of location
     private fun requestPermissions() {
         val shouldProvideRationale = ActivityCompat.shouldShowRequestPermissionRationale(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
+            this,
+            Manifest.permission.ACCESS_COARSE_LOCATION
         )
-        // Show UI with rationale for requesting a permission
         if (shouldProvideRationale) {
             Log.i(TAG, "Displaying permission rationale to provide additional context.")
-            showMessage("Location permission is needed for core functionality", "Okay",
-                    View.OnClickListener {
-                        startLocationPermissionRequest()
-                    })
-        }
-        else {
+            showSnackBar("Location permission is needed for core functionality", "Okay",
+                View.OnClickListener {
+                    startLocationPermissionRequest()
+                })
+
+            // Disable clock in button if location permission is denied
+            button_clockin.isEnabled = false
+        } else {
             Log.i(TAG, "Requesting permission")
             startLocationPermissionRequest()
         }
     }
 
     // Check if employee accepted or denied request for permissions
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
-            grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         Log.i(TAG, "onRequestPermissionResult")
         if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
             when {
@@ -174,33 +203,29 @@ class ClockInActivity : AppCompatActivity() {
                     // Permission granted.
                     getLastLocation()
                 }
-                // Go to device location settings
+
                 else -> {
-                    showMessage("Permission was denied", "Settings",
+                    showSnackBar("Permission was denied", "Settings",
                         View.OnClickListener {
-                                // Build intent that displays the App settings screen.
-                                val intent = Intent()
-                                intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                                val uri = Uri.fromParts(
-                                        "package",
-                                        Build.DISPLAY, null
-                                )
-                                intent.data = uri
-                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                startActivity(intent)
-                            }
+                            // Build intent that displays the App settings screen.
+                            val intent = Intent()
+                            intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                            val uri = Uri.fromParts(
+                                "package",
+                                Build.DISPLAY, null
+                            )
+                            intent.data = uri
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                            startActivity(intent)
+                        }
                     )
                 }
             }
         }
     }
+
     companion object {
         private const val TAG = "LocationProvider"
         private const val REQUEST_PERMISSIONS_REQUEST_CODE = 34
-    }
-
-    private fun showMessage(mainTextStringId: String, actionStringId: String,
-                            listener: View.OnClickListener) {
-        Toast.makeText(this@ClockInActivity, mainTextStringId, Toast.LENGTH_LONG).show()
     }
 }
