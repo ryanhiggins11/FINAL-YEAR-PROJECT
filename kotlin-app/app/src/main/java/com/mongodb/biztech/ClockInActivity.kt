@@ -14,9 +14,14 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
+import com.mongodb.biztech.model.ClockInTimes
+import io.realm.Realm
+import io.realm.mongodb.User
+import io.realm.mongodb.sync.SyncConfiguration
 import kotlinx.android.synthetic.main.activity_clock_in.*
 import kotlin.math.roundToInt
 
@@ -24,17 +29,31 @@ import kotlin.math.roundToInt
 * ClockInActivity: allows an employee to clock in.
 */
 class ClockInActivity : AppCompatActivity() {
-    private var user: io.realm.mongodb.User? = null
+    private var clockInRealm: Realm? = null
+    private var user: User? = null
+    private lateinit var partition: String
     private var fusedLocationClient: FusedLocationProviderClient? = null
     private var lastLocation: Location? = null
     private lateinit var locationRequest: LocationRequest
 
-    public override fun onStart() {
+    override fun onStart() {
         super.onStart()
         user = realmApp.currentUser()
         if (user == null) {
             // if no user is currently logged in, start the login activity so the user can authenticate
             startActivity(Intent(this, LoginActivity::class.java))
+        }
+        else {
+            val config = SyncConfiguration.Builder(user!!, "user=${user!!.id}")
+                .build()
+
+            // Sync all realm changes via a new instance, and when that instance has been successfully created connect it to an on-screen list (a recycler view)
+            Realm.getInstanceAsync(config, object : Realm.Callback() {
+                override fun onSuccess(realm: Realm) {
+                    // since this realm should live exactly as long as this activity, assign the realm to a member variable
+                    this@ClockInActivity.clockInRealm = realm
+                }
+            })
         }
 
         if (!checkPermissions()) {
@@ -46,6 +65,7 @@ class ClockInActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_clock_in)
@@ -60,7 +80,17 @@ class ClockInActivity : AppCompatActivity() {
 
         val button = findViewById<Button>(R.id.button_clockin)
 
+        user = realmApp.currentUser()
+
         button.setOnClickListener {
+            //val employee = ClockInTimes(config.user.id.toString()) // returns ID
+            val employee = ClockInTimes(user?.customData.toString()) // returns all user details
+
+            // all realm writes need to occur inside of a transaction
+            clockInRealm?.executeTransactionAsync { realm ->
+                realm.insert(employee)
+            }
+
             val intent = Intent(this@ClockInActivity, ClockOutActivity::class.java)
             startActivity(intent)
         }
