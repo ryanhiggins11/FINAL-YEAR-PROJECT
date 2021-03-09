@@ -15,6 +15,7 @@ lateinit var realmApp: App
 // of the name of the current class. Used for labelling logs.
 inline fun <reified T> T.TAG(): String = T::class.java.simpleName
 const val PARTITION_EXTRA_KEY = "PARTITION"
+const val PROJECT_NAME_EXTRA_KEY = "PROJECT NAME"
 
 /*
 * RealmApp: Sets up the Realm App and enables Realm-specific logging in debug mode.
