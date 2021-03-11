@@ -4,14 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.mongodb.biztech.model.ClockInTimes
+import com.mongodb.biztech.model.ClockOutTimes
 import io.realm.Realm
 import io.realm.mongodb.User
 import io.realm.mongodb.sync.SyncConfiguration
 
 /*
-* TaskActivity: allows a user to view a collection of Tasks, edit the status of those tasks,
-* create new tasks, and delete existing tasks from the collection. All tasks are stored in a realm
-* and synced across devices using the partition "project=<user id>".
+* ClockOutActivity: allows an employee to clock out and go on break.
 */
 class ClockOutActivity : AppCompatActivity() {
     private var clockOutRealm: Realm? = null
@@ -21,17 +21,17 @@ class ClockOutActivity : AppCompatActivity() {
         super.onStart()
         user = realmApp.currentUser()
         if (user == null) {
-            // if no user is currently logged in, start the login activity so the user can authenticate
+            // If no employee is currently logged in, start LoginActivity
             startActivity(Intent(this, LoginActivity::class.java))
         }
         else {
             val config = SyncConfiguration.Builder(user!!, "user=${user!!.id}")
                 .build()
 
-            // Sync all realm changes via a new instance, and when that instance has been successfully created connect it to an on-screen list (a recycler view)
+            // Sync all realm changes via a new instance
             Realm.getInstanceAsync(config, object : Realm.Callback() {
                 override fun onSuccess(realm: Realm) {
-                    // since this realm should live exactly as long as this activity, assign the realm to a member variable
+                    // Assign the realm so it lasts as long as the activity
                     this@ClockOutActivity.clockOutRealm = realm
                 }
             })
@@ -43,14 +43,24 @@ class ClockOutActivity : AppCompatActivity() {
         setContentView(R.layout.activity_clock_out)
 
         val button = findViewById<Button>(R.id.button_clockout)
-        button.setOnClickListener{
+
+        user = realmApp.currentUser()
+
+        button.setOnClickListener {
+            val employee = ClockOutTimes(user?.customData.toString()) // Returns all employee details
+
+            // All realm writes need to occur inside of a transaction
+            clockOutRealm?.executeTransactionAsync { realm ->
+                realm.insert(employee)
+            }
+
             val intent = Intent(this@ClockOutActivity, ClockInActivity::class.java)
             startActivity(intent)
         }
     }
 
     override fun onBackPressed() {
-        // Disable going back to ClockInActivity
+        // Disable going back to ClockInActivity without clocking out
         moveTaskToBack(true)
     }
 }
