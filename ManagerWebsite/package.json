@@ -1,0 +1,32 @@
+{
+  "name": "deploy-mern-on-heroku",
+  "version": "0.0.1",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Aman Mittal <amandeepmittal@live.com> (www.amanhimself.me)",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.1",
+    "validation": "^0.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amandeepmittal/deploy-mern-on-heroku.git"
+  },
+  "bugs": {
+    "url": "https://github.com/amandeepmittal/deploy-mern-on-heroku/issues"
+  },
+  "homepage": "https://github.com/amandeepmittal/deploy-mern-on-heroku#readme",
+  "description": ""
+}
