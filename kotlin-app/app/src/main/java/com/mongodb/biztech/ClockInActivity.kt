@@ -43,6 +43,11 @@ class ClockInActivity : AppCompatActivity() {
             // if no user is currently logged in, start the login activity so the user can authenticate
             startActivity(Intent(this, LoginActivity::class.java))
         }
+        // for manager
+        else if(user?.id == "60421e984b0c74ff833d013d"){
+            // if no user is manager, start the add employee activity
+            startActivity(Intent(this, ManagerActivity::class.java))
+        }
         else {
             val config = SyncConfiguration.Builder(user!!, "user=${user!!.id}")
                 .build()
@@ -78,12 +83,11 @@ class ClockInActivity : AppCompatActivity() {
         // Set the desired interval for active location updates, in milliseconds
         locationRequest.interval = 20 * 1000;
 
-        val button = findViewById<Button>(R.id.button_clockin)
+        val clockInButton = findViewById<Button>(R.id.button_clockin)
 
-        user = realmApp.currentUser()
-
-        button.setOnClickListener {
+        clockInButton.setOnClickListener {
             //val employee = ClockInTimes(config.user.id.toString()) // returns ID
+            // user?.profile.name
             val employee = ClockInTimes(user?.customData.toString()) // returns all user details
 
             // all realm writes need to occur inside of a transaction
@@ -92,6 +96,13 @@ class ClockInActivity : AppCompatActivity() {
             }
 
             val intent = Intent(this@ClockInActivity, ClockOutActivity::class.java)
+            startActivity(intent)
+        }
+
+        val resetPasswordButton = findViewById<Button>(R.id.button_password_reset)
+
+        resetPasswordButton.setOnClickListener{
+            val intent = Intent(this@ClockInActivity, ResetPasswordActivity::class.java)
             startActivity(intent)
         }
     }

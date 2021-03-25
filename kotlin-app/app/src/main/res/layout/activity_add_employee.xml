@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".AddEmployeeActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -51,13 +51,12 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button_login"
-            android:layout_width="325dp"
+            android:id="@+id/button_create"
+            android:layout_width="321dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="24dp"
             android:padding="12dp"
-            android:text="@string/login" />
+            android:text="@string/create_account" />
 
     </LinearLayout>
 
