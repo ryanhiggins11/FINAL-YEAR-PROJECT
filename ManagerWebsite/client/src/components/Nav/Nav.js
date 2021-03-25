@@ -1,15 +1,13 @@
-import React from 'react';
+import React, { Component } from 'react';
+import './Nav.css';
 
-const Nav = () => (
-	<nav className="navbar navbar-inverse navbar-top">
-		<div className="container-fluid">
-			<div className="navbar-header">
-				<a href="/" className="navbar-brand">
-					React Reading List
-				</a>
-			</div>
-		</div>
-	</nav>
-);
-
-export default Nav;
+class Navbar extends Component {
+    render() {
+        return(
+            <header>
+                <h1> Biztech Management</h1>
+            </header>
+        )
+    }
+}
+export default Navbar;
