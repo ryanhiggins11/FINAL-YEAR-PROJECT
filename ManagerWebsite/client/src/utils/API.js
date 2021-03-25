@@ -16,5 +16,22 @@ export default {
 	// Saves a clock in time to the database (don't need)
 	saveClockInTime: function(clockInTimeData) {
 		return axios.post('/api/ClockInTimes', clockInTimeData);
+	},
+
+	// Gets all users
+	getUsers: function() {
+		return axios.get('/api/User');
+	},
+	// Gets the user with the given id
+	getUser: function(id) {
+		return axios.get('/api/User/' + id);
+	},
+	// Deletes the user with the given id
+	deleteUser: function(id) {
+		return axios.delete('/api/User/' + id);
+	},
+	// Saves a user to the database
+	saveUser: function(userData) {
+		return axios.post('/api/User', userData);
 	}
 };

@@ -15,18 +15,18 @@ module.exports = {
 	},
 	create: function(req, res) {
 		ClockInTime.create(req.body)
-			.then(newBook => res.json(newBook))
+			.then(clockInTime => res.json(newBoclockInTimeok))
 			.catch(err => res.status(422).json(err));
 	},
 	update: function(req, res) {
 		ClockInTime.findOneAndUpdate({ _id: req.params.id }, req.body)
-			.then(book => res.json(book))
+			.then(clockInTime => res.json(clockInTime))
 			.catch(err => res.status(422).json(err));
 	},
 	remove: function(req, res) {
 		ClockInTime.findById({ _id: req.params.id })
-			.then(book => book.remove())
-			.then(allbooks => res.json(allbooks))
+			.then(clockInTime => clockInTime.remove())
+			.then(allclockInTimes => res.json(allclockInTimes))
 			.catch(err => res.status(422).json(err));
 	}
 };

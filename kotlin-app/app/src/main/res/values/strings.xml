@@ -10,4 +10,8 @@
     <string name="toBreak">Break</string>
     <string name="clockOut">Clock Out</string>
     <string name="welcome">Welcome!</string>
+    <string name="addEmployee">Add Employee</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="password_reset">Reset Password</string>
+    <string name="reset_password">Reset Password</string>
 </resources>

@@ -5,7 +5,10 @@ const Nav = () => (
 		<div className="container-fluid">
 			<div className="navbar-header">
 				<a href="/" className="navbar-brand">
-					React Reading List
+					Home
+				</a>
+				<a href="/addEmployee" className="navbar-brand">
+					Add Employee
 				</a>
 			</div>
 		</div>
