@@ -5,10 +5,10 @@ mongoose.connect(process.env.MONGODB_URI || URI);
 
 // When successfully connected
 mongoose.connection.on('connected', () => {
-	console.log('Established Mongoose Default Connection');
+	console.log('Established Connection To Biztech');
 });
 
 // When connection throws an error
 mongoose.connection.on('error', err => {
-	console.log('Mongoose Default Connection Error : ' + err);
+	console.log('Biztech Default Connection Error : ' + err);
 });

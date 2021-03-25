@@ -6,8 +6,10 @@ import { Link } from 'react-router-dom';
 import { Col, Row, Container } from '../../components/Grid';
 import { List, ListItem } from '../../components/List';
 import { Input, FormBtn } from '../../components/Form';
+import '../ClockInTimes/ClockInTimes.css';
 
-class ClockInTimes extends Component {
+
+class ClockInTimes extends React.Component {
 	state = {
 		clockInTimes: [],
 		employee: '',
@@ -37,17 +39,17 @@ class ClockInTimes extends Component {
 		});
 	};
 
-	// handleFormSubmit = event => {
-	// 	event.preventDefault();
-	// 	if (this.state.employee && this.state.clockedInTime) {
-	// 		API.saveClockInTime({
-	// 			employee: this.state.employee,
-	// 			clockedInTime: this.state.clockedInTime
-	// 		})
-	// 			.then(res => this.loadClockInTimes())
-	// 			.catch(err => console.log(err));
-	// 	}
-	// };
+	/* handleFormSubmit = event => {
+	 	event.preventDefault();
+	 	if (this.state.employee && this.state.clockedInTime) {
+	 		API.saveClockInTime({
+	 			employee: this.state.employee,
+	 			clockedInTime: this.state.clockedInTime
+	 		})
+	 			.then(res => this.loadClockInTimes())
+	 			.catch(err => console.log(err));
+		}
+	 };*/
 
 	render() {
 		return (
@@ -79,17 +81,17 @@ class ClockInTimes extends Component {
 							</FormBtn>
 						</form>
 					</Col> */}
-					<Col size="md-6 sm-12">
-						<Jumbotron>
-							<h1>Employees and times they clocked in</h1>
-						</Jumbotron>
+					<Col size="md-6 sm-12">	
+
+					<div classname="clock-in"><h1>Employees Clock-In Times:</h1></div>
 						{this.state.clockInTimes.length ? (
 							<List>
+								
 								{this.state.clockInTimes.map(clockInTime => (
 									<ListItem key={clockInTime._id}>
 										<Link to={'/clockInTimes/' + clockInTime._id}>
 											<strong>
-												{clockInTime.employee} clocked in at {clockInTime.clockedInTime}
+												{clockInTime.employee} Clocked in at {clockInTime.clockedInTime}
 											</strong>
 										</Link>
 										<DeleteBtn onClick={() => this.deleteClockInTime(clockInTime._id)} />
@@ -103,6 +105,7 @@ class ClockInTimes extends Component {
 				</Row>
 			</Container>
 		);
+
 	}
 }
 
