@@ -23,6 +23,11 @@ class ManagerActivity : AppCompatActivity(){
             // if no user is currently logged in, start the login activity so the user can authenticate
             startActivity(Intent(this, LoginActivity::class.java))
         }
+        // for manager
+        else if(user?.customData?.get("name") != "jackmcnamee2@gmail.com"){
+            // if user is manager, start the add employee activity
+            startActivity(Intent(this, ClockInActivity::class.java))
+        }
     }
 
     public override fun onCreate(savedInstanceState: Bundle?) {

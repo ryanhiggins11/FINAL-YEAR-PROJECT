@@ -32,6 +32,7 @@
         <activity android:name=".ManagerActivity"/>
         <activity android:name=".AddEmployeeActivity"/>
         <activity android:name=".ClockOutActivity"/>
+        <activity android:name=".BreakActivity"/>
     </application>
 
 </manifest>

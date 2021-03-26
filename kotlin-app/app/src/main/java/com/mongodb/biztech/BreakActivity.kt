@@ -7,8 +7,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.mongodb.biztech.model.breakfinishtime
 import com.mongodb.biztech.model.breakstarttime
-import com.mongodb.biztech.model.clockouttimes
 import io.realm.Realm
 import io.realm.mongodb.User
 import io.realm.mongodb.sync.SyncConfiguration
@@ -16,8 +16,8 @@ import io.realm.mongodb.sync.SyncConfiguration
 /*
 * ClockOutActivity: allows an employee to clock out
 */
-class ClockOutActivity : AppCompatActivity() {
-    private var clockOutRealm: Realm? = null
+class BreakActivity : AppCompatActivity() {
+    private var breakRealm: Realm? = null
     private var user: User? = null
 
     override fun onStart() {
@@ -29,13 +29,13 @@ class ClockOutActivity : AppCompatActivity() {
         }
         else {
             val config = SyncConfiguration.Builder(user!!, "user=${user!!.id}")
-                .build()
+                    .build()
 
             // Sync all realm changes via a new instance
             Realm.getInstanceAsync(config, object : Realm.Callback() {
                 override fun onSuccess(realm: Realm) {
                     // Assign the realm so it lasts as long as the activity
-                    this@ClockOutActivity.clockOutRealm = realm
+                    this@BreakActivity.breakRealm = realm
                 }
             })
         }
@@ -43,30 +43,37 @@ class ClockOutActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_clock_out)
+        setContentView(R.layout.activity_break)
 
         user = realmApp.currentUser()
 
-        val clockOutButton = findViewById<Button>(R.id.button_clockout)
+        val breakStartButton = findViewById<Button>(R.id.button_toStartBreak)
 
-        // allow employee to clock out
-        clockOutButton.setOnClickListener {
-            // returns employee name to clockouttimes collection
-            val employee = clockouttimes(user?.customData?.get("name").toString())
+        breakStartButton.setOnClickListener{
+            // returns employee name to breakstarttime collection
+            val employee = breakstarttime(user?.customData?.get("name").toString())
 
             // All realm writes need to occur inside of a transaction
-            clockOutRealm?.executeTransactionAsync { realm ->
+            breakRealm?.executeTransactionAsync { realm ->
                 realm.insert(employee)
             }
 
-            val intent = Intent(this@ClockOutActivity, ClockInActivity::class.java)
-            startActivity(intent)
+            // disable start break button
+            breakStartButton.isEnabled = false
         }
 
-        val breakButton = findViewById<Button>(R.id.button_toBreak)
+        val breakFinishButton = findViewById<Button>(R.id.button_toGoBackToWork)
 
-        breakButton.setOnClickListener{
-            val intent = Intent(this@ClockOutActivity, BreakActivity::class.java)
+        breakFinishButton.setOnClickListener{
+            // returns employee name to breakfinishtime collection
+            val employee = breakfinishtime(user?.customData?.get("name").toString())
+
+            // All realm writes need to occur inside of a transaction
+            breakRealm?.executeTransactionAsync { realm ->
+                realm.insert(employee)
+            }
+
+            val intent = Intent(this@BreakActivity, ClockOutActivity::class.java)
             startActivity(intent)
         }
     }
@@ -77,7 +84,7 @@ class ClockOutActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        // Disable going back to LoginActivity and ClockInActivity
+        // Disable going back to LoginActivity and ClockOutActivity
         moveTaskToBack(true)
     }
 
