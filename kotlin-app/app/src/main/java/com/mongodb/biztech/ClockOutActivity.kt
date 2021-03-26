@@ -4,14 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.mongodb.biztech.model.ClockInTimes
-import com.mongodb.biztech.model.ClockOutTimes
+import com.mongodb.biztech.model.clockouttimes
 import io.realm.Realm
 import io.realm.mongodb.User
 import io.realm.mongodb.sync.SyncConfiguration
 
 /*
-* ClockOutActivity: allows an employee to clock out and go on break.
+* ClockOutActivity: allows an employee to clock out
 */
 class ClockOutActivity : AppCompatActivity() {
     private var clockOutRealm: Realm? = null
@@ -42,12 +41,14 @@ class ClockOutActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_clock_out)
 
-        val button = findViewById<Button>(R.id.button_clockout)
+        val clockOutButton = findViewById<Button>(R.id.button_clockout)
 
         user = realmApp.currentUser()
 
-        button.setOnClickListener {
-            val employee = ClockOutTimes(user?.customData.toString()) // Returns all employee details
+        // allow employee to clock out
+        clockOutButton.setOnClickListener {
+            // returns employee name to clockouttimes collection
+            val employee = clockouttimes(user?.customData?.get("name").toString())
 
             // All realm writes need to occur inside of a transaction
             clockOutRealm?.executeTransactionAsync { realm ->

@@ -10,15 +10,17 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
+/*
+* clockouttimes collection on database
+ */
 @RequiresApi(Build.VERSION_CODES.O)
-val currentClockInTime = LocalTime.now()
+val currentClockOutTime = LocalTime.now()
 
-open class ClockInTimes(_name: String = "Name") : RealmObject() {
+open class clockouttimes(_name: String = "Name") : RealmObject() {
     @PrimaryKey var _id: ObjectId = ObjectId()
     var name: String = _name
-    var owner: String? = null
 
     @RequiresApi(Build.VERSION_CODES.O)
     @Required
-    var clockInTime: String = currentClockInTime.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM))
+    var clockedOutTime: String = currentClockOutTime.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM))
 }
