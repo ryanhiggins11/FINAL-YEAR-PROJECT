@@ -18,7 +18,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
-import com.mongodb.biztech.model.ClockInTimes
+import com.mongodb.biztech.model.clockintimes
 import io.realm.Realm
 import io.realm.mongodb.User
 import io.realm.mongodb.sync.SyncConfiguration
@@ -31,7 +31,6 @@ import kotlin.math.roundToInt
 class ClockInActivity : AppCompatActivity() {
     private var clockInRealm: Realm? = null
     private var user: User? = null
-    private lateinit var partition: String
     private var fusedLocationClient: FusedLocationProviderClient? = null
     private var lastLocation: Location? = null
     private lateinit var locationRequest: LocationRequest
@@ -40,14 +39,15 @@ class ClockInActivity : AppCompatActivity() {
         super.onStart()
         user = realmApp.currentUser()
         if (user == null) {
-            // if no user is currently logged in, start the login activity so the user can authenticate
+            // if no user is currently logged in, start the login activity
             startActivity(Intent(this, LoginActivity::class.java))
         }
         // for manager
-        else if(user?.id == "60421e984b0c74ff833d013d"){
-            // if no user is manager, start the add employee activity
+        else if(user?.customData?.get("name") == "jackmcnamee2@gmail.com"){
+            // if user is manager, start the add employee activity
             startActivity(Intent(this, ManagerActivity::class.java))
         }
+        // for employees
         else {
             val config = SyncConfiguration.Builder(user!!, "user=${user!!.id}")
                 .build()
@@ -85,10 +85,10 @@ class ClockInActivity : AppCompatActivity() {
 
         val clockInButton = findViewById<Button>(R.id.button_clockin)
 
+        // allow employee to clock in
         clockInButton.setOnClickListener {
-            //val employee = ClockInTimes(config.user.id.toString()) // returns ID
-            // user?.profile.name
-            val employee = ClockInTimes(user?.customData.toString()) // returns all user details
+            // returns employee name to clockintimes collection
+            val employee = clockintimes(user?.customData?.get("name").toString())
 
             // all realm writes need to occur inside of a transaction
             clockInRealm?.executeTransactionAsync { realm ->
@@ -101,6 +101,7 @@ class ClockInActivity : AppCompatActivity() {
 
         val resetPasswordButton = findViewById<Button>(R.id.button_password_reset)
 
+        // allow employee to reset password
         resetPasswordButton.setOnClickListener{
             val intent = Intent(this@ClockInActivity, ResetPasswordActivity::class.java)
             startActivity(intent)
