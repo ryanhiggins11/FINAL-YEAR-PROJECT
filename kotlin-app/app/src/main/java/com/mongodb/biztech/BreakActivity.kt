@@ -1,20 +1,25 @@
 package com.mongodb.biztech
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.mongodb.biztech.model.breakfinishtime
 import com.mongodb.biztech.model.breakstarttime
 import io.realm.Realm
 import io.realm.mongodb.User
 import io.realm.mongodb.sync.SyncConfiguration
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 /*
-* ClockOutActivity: allows an employee to clock out
+* BreakActivity: allows an employee to start and finish their break
 */
 class BreakActivity : AppCompatActivity() {
     private var breakRealm: Realm? = null
@@ -41,6 +46,7 @@ class BreakActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_break)
@@ -50,29 +56,34 @@ class BreakActivity : AppCompatActivity() {
         val breakStartButton = findViewById<Button>(R.id.button_toStartBreak)
 
         breakStartButton.setOnClickListener{
-            // returns employee name to breakstarttime collection
-            val employee = breakstarttime(user?.customData?.get("name").toString())
+            // Returns current time to breakstarttime collection
+            val currentBreakStartTime = LocalTime.now()
+            val employee = breakstarttime(currentBreakStartTime.format
+                                (DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)))
 
             // All realm writes need to occur inside of a transaction
             breakRealm?.executeTransactionAsync { realm ->
                 realm.insert(employee)
             }
 
-            // disable start break button
+            // Disable start break button
             breakStartButton.isEnabled = false
         }
 
         val breakFinishButton = findViewById<Button>(R.id.button_toGoBackToWork)
 
         breakFinishButton.setOnClickListener{
-            // returns employee name to breakfinishtime collection
-            val employee = breakfinishtime(user?.customData?.get("name").toString())
+            // Returns current time to breakfinishtime collection
+            val currentBreakFinishTime = LocalTime.now()
+            val employee = breakfinishtime(currentBreakFinishTime.format
+                                (DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)))
 
             // All realm writes need to occur inside of a transaction
             breakRealm?.executeTransactionAsync { realm ->
                 realm.insert(employee)
             }
 
+            // Go back to ClockOutActivity
             val intent = Intent(this@BreakActivity, ClockOutActivity::class.java)
             startActivity(intent)
         }
