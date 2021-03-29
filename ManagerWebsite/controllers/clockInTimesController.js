@@ -15,7 +15,7 @@ module.exports = {
 	},
 	create: function(req, res) {
 		ClockInTime.create(req.body)
-			.then(clockInTime => res.json(newBoclockInTimeok))
+			.then(clockInTime => res.json(clockInTime))
 			.catch(err => res.status(422).json(err));
 	},
 	update: function(req, res) {

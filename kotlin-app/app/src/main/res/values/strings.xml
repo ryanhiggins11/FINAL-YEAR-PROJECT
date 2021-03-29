@@ -14,4 +14,8 @@
     <string name="forgot_password">Forgot Password?</string>
     <string name="password_reset">Reset Password</string>
     <string name="reset_password">Reset Password</string>
+    <string name="toGoBackToWork">Go back to work</string>
+    <string name="press_the_button_to_go_back_to_work">Press the button to go back to work</string>
+    <string name="toStartBreak">Start Break</string>
+    <string name="break_station_title">Break Station</string>
 </resources>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BreakActivity">
+
+    <!-- Break Page -->
+
+    <TextView
+        android:id="@+id/clockStationTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="73dp"
+        android:layout_marginBottom="44dp"
+        android:text="@string/break_station_title"
+        android:textColor="@color/black"
+        android:textSize="45dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/breakInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        android:text="@string/press_the_button_to_go_back_to_work"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="201dp"
+        android:layout_height="169dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="31dp"
+        android:layout_marginEnd="76dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/clockStationTitle"
+        app:srcCompat="@drawable/work" />
+
+    <Button
+        android:id="@+id/button_toStartBreak"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="137dp"
+        android:text="@string/toStartBreak"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/breakInfo" />
+
+    <Button
+        android:id="@+id/button_toGoBackToWork"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="140dp"
+        android:layout_marginEnd="137dp"
+        android:text="@string/toGoBackToWork"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/breakInfo" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
