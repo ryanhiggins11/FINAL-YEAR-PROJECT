@@ -162,13 +162,13 @@ class ClockInActivity : AppCompatActivity() {
                 val longLocation = (lastLocation)!!.longitude.roundToInt()
 
                 // Set workplace location here, will disable clock in button if employee not at work
-                button_clockin.isEnabled = latLocation in 0..200 && longLocation in -1 downTo -100
+                //button_clockin.isEnabled = latLocation in 0..200 && longLocation in -1 downTo -100
             } else {
                 Log.w(TAG, "getLastLocation:exception", task.exception)
                 showMessage("No location detected. Make sure location is enabled on the device.")
 
                 // Disable clock in button if location is not turned on
-                button_clockin.isEnabled = false
+                //button_clockin.isEnabled = false
             }
         }
     }
