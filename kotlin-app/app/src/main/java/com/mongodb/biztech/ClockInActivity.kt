@@ -23,10 +23,10 @@ import io.realm.Realm
 import io.realm.mongodb.User
 import io.realm.mongodb.sync.SyncConfiguration
 import kotlinx.android.synthetic.main.activity_clock_in.*
-import kotlin.math.roundToInt
+import org.bson.Document
 
 /*
-* ClockInActivity: allows an employee to clock in.
+* ClockInActivity: allows an employee to clock in and reset their password
 */
 class ClockInActivity : AppCompatActivity() {
     private var clockInRealm: Realm? = null
@@ -39,15 +39,15 @@ class ClockInActivity : AppCompatActivity() {
         super.onStart()
         user = realmApp.currentUser()
         if (user == null) {
-            // if no user is currently logged in, start the login activity
+            // If no user is currently logged in, start the login activity
             startActivity(Intent(this, LoginActivity::class.java))
         }
-        // for manager
+        // For manager
         else if(user?.customData?.get("name") == "jackmcnamee2@gmail.com"){
             // if user is manager, start the add employee activity
             startActivity(Intent(this, ManagerActivity::class.java))
         }
-        // for employees
+        // For employees
         else {
             val config = SyncConfiguration.Builder(user!!, "user=${user!!.id}")
                 .build()
@@ -85,12 +85,12 @@ class ClockInActivity : AppCompatActivity() {
 
         val clockInButton = findViewById<Button>(R.id.button_clockin)
 
-        // allow employee to clock in
+        // Allow employee to clock in
         clockInButton.setOnClickListener {
-            // returns employee name to clockintimes collection
+            // Returns employee name to clockintimes collection
             val employee = clockintimes(user?.customData?.get("name").toString())
 
-            // all realm writes need to occur inside of a transaction
+            // All realm writes need to occur inside of a transaction
             clockInRealm?.executeTransactionAsync { realm ->
                 realm.insert(employee)
             }
@@ -101,7 +101,7 @@ class ClockInActivity : AppCompatActivity() {
 
         val resetPasswordButton = findViewById<Button>(R.id.button_password_reset)
 
-        // allow employee to reset password
+        // Allow employee to reset password
         resetPasswordButton.setOnClickListener{
             val intent = Intent(this@ClockInActivity, ResetPasswordActivity::class.java)
             startActivity(intent)
@@ -142,6 +142,7 @@ class ClockInActivity : AppCompatActivity() {
     // https://www.tutorialspoint.com/how-to-track-the-current-location-latitude-and-longitude-in-an-android-device-using-kotlin
     // Finds the location of the employee using the FusedLocationProviderClient
     private fun getLastLocation() {
+
         // Check permission
         if (ActivityCompat.checkSelfPermission(
                 this,
@@ -158,11 +159,41 @@ class ClockInActivity : AppCompatActivity() {
             if (task.isSuccessful && task.result != null) {
                 lastLocation = task.result
 
-                val latLocation = (lastLocation)!!.latitude.roundToInt()
-                val longLocation = (lastLocation)!!.longitude.roundToInt()
+                // employees current location
+                val latLocation = (lastLocation)!!.latitude.round(3)
+                val longLocation = (lastLocation)!!.longitude.round(3)
 
-                // Set workplace location here, will disable clock in button if employee not at work
-                button_clockin.isEnabled = latLocation in 0..200 && longLocation in -1 downTo -100
+                // Output employee location details to console
+                Log.v("EXAMPLE", "employee latitude: $latLocation")
+                Log.v("EXAMPLE", "employee longitude: $longLocation")
+
+                // Find location collection on mongodb
+                val user = realmApp.currentUser()
+                val mongoClient =
+                        user!!.getMongoClient("mongodb-atlas") // service for MongoDB Atlas cluster containing custom user data
+                val mongoDatabase =
+                        mongoClient.getDatabase("tracker")
+                val mongoCollection =
+                        mongoDatabase.getCollection("location")
+
+                // Find first document in collection
+                val query = Document()
+                mongoCollection?.findOne(query)?.getAsync { task ->
+                    if (task.isSuccess) {
+                        // Latitude and Longitude in document
+                        val latitude = task.get()["latitude"]
+                        val longitude = task.get()["longitude"]
+                        // Output location details in document to console
+                        Log.v("EXAMPLE", "successfully found latitude: $latitude")
+                        Log.v("EXAMPLE", "successfully found longitude: $longitude")
+
+                        // Enable button if employee location is equal to latitude & longitude in document
+                        button_clockin.isEnabled = latLocation == latitude && longLocation == longitude
+
+                    } else {
+                        Log.e("EXAMPLE", "failed to find document with: ${task.error}")
+                    }
+                }
             } else {
                 Log.w(TAG, "getLastLocation:exception", task.exception)
                 showMessage("No location detected. Make sure location is enabled on the device.")
@@ -269,5 +300,12 @@ class ClockInActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "LocationProvider"
         private const val REQUEST_PERMISSIONS_REQUEST_CODE = 34
+    }
+
+    // Round double to 3 decimal places
+    fun Double.round(decimals: Int): Double {
+        var multiplier = 1.0
+        repeat(decimals) { multiplier *= 10 }
+        return kotlin.math.round(this * multiplier) / multiplier
     }
 }
