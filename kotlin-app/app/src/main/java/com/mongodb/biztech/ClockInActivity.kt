@@ -189,7 +189,6 @@ class ClockInActivity : AppCompatActivity() {
 
                         // Enable button if employee location is equal to latitude & longitude in document
                         button_clockin.isEnabled = latLocation == latitude && longLocation == longitude
-
                     } else {
                         Log.e("EXAMPLE", "failed to find document with: ${task.error}")
                     }
