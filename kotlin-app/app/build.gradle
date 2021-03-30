@@ -55,8 +55,10 @@ dependencies {
     implementation "io.realm:android-adapters:4.0.0"
     implementation "androidx.recyclerview:recyclerview:1.1.0"
     implementation 'com.google.android.gms:play-services-location:16.0.0'
+    implementation 'androidx.room:room-runtime:2.2.5'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation "androidx.biometric:biometric:$biometric_version"
+    annotationProcessor 'androidx.room:room-compiler:2.2.5'
 }

@@ -19,4 +19,8 @@
     <string name="press_the_button_to_go_on_break">Clock out for lunch below</string>
     <string name="toStartBreak">Start Break</string>
     <string name="break_station_title">Break Station</string>
+    <string name="changeLocation">Change Location</string>
+    <string name="latLocation">Latitude</string>
+    <string name="longLocation">Longitude</string>
+    <string name="change_location">Change Location</string>
 </resources>

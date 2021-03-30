@@ -9,6 +9,17 @@
     <!-- Manager Page-->
 
     <Button
+        android:id="@+id/button_changeLocation"
+        android:layout_width="160dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="120dp"
+        android:text="@string/changeLocation"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
         android:id="@+id/button_addEmployee"
         android:layout_width="138dp"
         android:layout_height="60dp"
