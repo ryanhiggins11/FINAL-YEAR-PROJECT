@@ -7,7 +7,10 @@ class Navbar extends Component {
             <header>
                 <h1> Biztech Management</h1>
             </header>
+
         )
     }
+
+    
 }
 export default Navbar;

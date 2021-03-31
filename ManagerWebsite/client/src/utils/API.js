@@ -17,6 +17,24 @@ export default {
 	saveClockInTime: function(clockInTimeData) {
 		return axios.post('/api/ClockInTimes', clockInTimeData);
 	},
+	// Gets all clock in times
+	getClockOutTimes: function() {
+		return axios.get('/api/ClockOutTimes');
+	},
+	// Gets the clock in time with the given id
+	getClockOutTime: function(id) {
+		return axios.get('/api/ClockOutTimes/' + id);
+	},
+	// Deletes the clock in time with the given id
+	deleteClockOutTime: function(id) {
+		return axios.delete('/api/ClockOutTimes/' + id);
+	},
+	// Saves a clock in time to the database (don't need)
+	saveClockOutTime: function(clockOutTimeData) {
+		return axios.post('/api/ClockOutTimes', clockOutTimeData);
+	},
+	
+	
 
 	// Gets all users
 	getUsers: function() {

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const clockInTimeSchema = new Schema({
-	employee: {
+	name: {
 		type: String,
 		required: true
 	},
