@@ -6,13 +6,13 @@ import { Link } from 'react-router-dom';
 import { Col, Row, Container } from '../../components/Grid';
 import { List, ListItem } from '../../components/List';
 import { Input, FormBtn } from '../../components/Form';
-import '../ClockInTimes/ClockInTimes.css';
+
 
 
 class ClockInTimes extends React.Component {
 	state = {
 		clockInTimes: [],
-		employee: '',
+		name: '',
 		clockedInTime: ''
 	};
 
@@ -22,7 +22,7 @@ class ClockInTimes extends React.Component {
 
 	loadClockInTimes = () => {
 		API.getClockInTimes()
-			.then(res => this.setState({ clockInTimes: res.data, employee: '', clockedInTime: '' }))
+			.then(res => this.setState({ clockInTimes: res.data, name: '', clockedInTime: '' }))
 			.catch(err => console.log(err));
 	};
 
@@ -82,7 +82,7 @@ class ClockInTimes extends React.Component {
 						</form>
 					</Col> */}
 					<Col size="md-6 sm-12">	
-
+					
 					<div classname="clock-in"><h1>Employees Clock-In Times:</h1></div>
 						{this.state.clockInTimes.length ? (
 							<List>
@@ -91,16 +91,19 @@ class ClockInTimes extends React.Component {
 									<ListItem key={clockInTime._id}>
 										<Link to={'/clockInTimes/' + clockInTime._id}>
 											<strong>
-												{clockInTime.employee} Clocked in at {clockInTime.clockedInTime}
+												{clockInTime.name} Clocked in at {clockInTime.clockedInTime}
 											</strong>
 										</Link>
 										<DeleteBtn onClick={() => this.deleteClockInTime(clockInTime._id)} />
 									</ListItem>
+									
 								))}
 							</List>
+							
 						) : (
 							<h3>No Results to Display</h3>
 						)}
+						<a href="clockOutTimes"><button>Clock-Out Times</button></a>
 					</Col>
 				</Row>
 			</Container>

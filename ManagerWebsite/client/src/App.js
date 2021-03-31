@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-//import Books from './pages/Books';
 import ClockInTimes from './pages/ClockInTimes';
-import User from './pages/User';
-import Detail from './pages/Detail';
+import ClockInDetail from './pages/ClockInDetail';
+import ClockOutDetail from './pages/ClockOutDetail';
 import NoMatch from './pages/NoMatch';
 import Navbar from './components/Nav/Nav';
+import ClockOutTimes from './pages/ClockOutTimes';
+import Home from './pages/Home/Home';
+
 
 const App = () => (
 	
@@ -15,10 +17,12 @@ const App = () => (
 			<Navbar />
 			<Switch>
 				{}
-				<Route exact path="/" component={ClockInTimes} />
+				<Route exact path="/" component={Home}/>
+				{/* <Route exact path="/" component={ClockInTimes} /> */}
 				<Route exact path="/clockInTimes" component={ClockInTimes} />
-				<Route exact path="/clockInTimes/:id" component={Detail} />
-				<Route exact path="/addEmployee" component={User} />
+				<Route exact path="/clockInTimes/:id" component={ClockInDetail} />
+				<Route exact path="/clockOutTimes" component={ClockOutTimes} />
+				<Route exact path="/clockOutTimes/:id" component={ClockOutDetail}/>
 				<Route component={NoMatch} />
 			</Switch>
 		</div>
