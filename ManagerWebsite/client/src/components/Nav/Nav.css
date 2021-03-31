@@ -1,0 +1,8 @@
+/* CSS STYLE SHEETS */ 
+header {    
+    background-color: #38ada9;    
+    color: #ffffff;    
+    padding: 10px;
+    text-align: center;    
+    /*box-shadow: 5px 7px 5px 7px #888888;*/
+}
