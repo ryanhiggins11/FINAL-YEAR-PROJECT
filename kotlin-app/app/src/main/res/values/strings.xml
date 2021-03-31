@@ -19,7 +19,10 @@
     <string name="press_the_button_to_go_on_break">Clock out for lunch below</string>
     <string name="toStartBreak">Start Break</string>
     <string name="break_station_title">Break Station</string>
-    <string name="changeLocation">Change Location</string>
+    <string name="manager_title">Manager Area</string>
+    <string name="changeLocation">Change Workplace Location</string>
+    <string name="changeLocationButton">Change Location</string>
+    <string name="addEmployeeTitle">Register New Employee</string>
     <string name="latLocation">Latitude</string>
     <string name="longLocation">Longitude</string>
     <string name="change_location">Change Location</string>
