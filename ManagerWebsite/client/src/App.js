@@ -6,7 +6,7 @@ import ClockOutDetail from './pages/ClockOutDetail';
 import NoMatch from './pages/NoMatch';
 import Navbar from './components/Nav/Nav';
 import ClockOutTimes from './pages/ClockOutTimes';
-import Home from './pages/Home/Home';
+
 
 
 const App = () => (
@@ -17,8 +17,8 @@ const App = () => (
 			<Navbar />
 			<Switch>
 				{}
-				<Route exact path="/" component={Home}/>
-				{/* <Route exact path="/" component={ClockInTimes} /> */}
+				{/* <Route exact path="/" component={Home}/> */}
+				<Route exact path="/" component={ClockInTimes} /> 
 				<Route exact path="/clockInTimes" component={ClockInTimes} />
 				<Route exact path="/clockInTimes/:id" component={ClockInDetail} />
 				<Route exact path="/clockOutTimes" component={ClockOutTimes} />
