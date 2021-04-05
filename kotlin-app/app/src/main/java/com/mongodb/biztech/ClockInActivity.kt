@@ -21,9 +21,13 @@ import com.google.android.gms.location.*
 import com.mongodb.biztech.model.clockintimes
 import io.realm.Realm
 import io.realm.mongodb.User
+import io.realm.mongodb.mongo.options.UpdateOptions
 import io.realm.mongodb.sync.SyncConfiguration
 import kotlinx.android.synthetic.main.activity_clock_in.*
 import org.bson.Document
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 /*
 * ClockInActivity: allows an employee to clock in and reset their password
@@ -43,12 +47,15 @@ class ClockInActivity : AppCompatActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
         }
         // For manager
-        else if(user?.customData?.get("name") == "admin@biztech.com"){
+        else if(user?.customData?.get("name") == "jackmcnamee2@gmail.com"){
             // if user is manager, start the add employee activity
             startActivity(Intent(this, ManagerActivity::class.java))
         }
         // For employees
         else {
+            // Check if employee is clocked in
+            isClockedIn()
+
             val config = SyncConfiguration.Builder(user!!, "user=${user!!.id}")
                 .build()
 
@@ -87,13 +94,7 @@ class ClockInActivity : AppCompatActivity() {
 
         // Allow employee to clock in
         clockInButton.setOnClickListener {
-            // Returns employee name to clockintimes collection
-            val employee = clockintimes(user?.customData?.get("name").toString())
-
-            // All realm writes need to occur inside of a transaction
-            clockInRealm?.executeTransactionAsync { realm ->
-                realm.insert(employee)
-            }
+            clockIn()
 
             val intent = Intent(this@ClockInActivity, ClockOutActivity::class.java)
             startActivity(intent)
@@ -135,6 +136,94 @@ class ClockInActivity : AppCompatActivity() {
             }
             else -> {
                 super.onOptionsItemSelected(item)
+            }
+        }
+    }
+
+    // Input clock in time and updates clocked in status when employee clocks in
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun clockIn(){
+        // Get current time
+        val currentClockInTime = LocalTime.now()
+
+        // Find clockintimes collection on mongodb
+        val user = realmApp.currentUser()
+        val mongoClient =
+                user!!.getMongoClient("mongodb-atlas") // service for MongoDB Atlas cluster containing custom user data
+        val mongoDatabase =
+                mongoClient.getDatabase("tracker")
+        val mongoCollectionClockInTimes =
+                mongoDatabase.getCollection("clockintimes")
+
+        // Find document in collection with user's ID
+        val queryOne = Document("_partition", "user="+user.id)
+        // Update document with the current time
+        val updateClockInTimes = Document("_partition", "user="+user.id).append("clockedInTime", currentClockInTime.format
+                                                                    (DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)))
+                                                            .append("name", user?.customData?.get("name"))
+        // Allow upsert (if document not found, create one)
+        val updateOptions = UpdateOptions().upsert(true)
+        // Update/upsert document
+        mongoCollectionClockInTimes?.updateOne(queryOne, updateClockInTimes, updateOptions)?.getAsync { task ->
+            if (task.isSuccess) {
+                if(task.get().upsertedId != null){
+                    Log.v("EXAMPLE", "upserted document")
+                } else {
+                    Log.v("EXAMPLE", "updated document")
+                }
+            } else {
+                Log.e("EXAMPLE", "failed to update document with: ${task.error}")
+            }
+        }
+
+        val mongoCollectionIsClockedIn =
+                mongoDatabase.getCollection("isclockedin")
+
+        // Find document in collection with user's ID
+        val queryTwo = Document("_partition", "user="+user.id)
+        // Update document with the current time
+        val updateIsClockedIn = Document("_partition", "user="+user.id).append("clockedIn", true)
+        // Update/upsert document
+        mongoCollectionIsClockedIn?.updateOne(queryTwo, updateIsClockedIn, updateOptions)?.getAsync { task ->
+            if (task.isSuccess) {
+                if(task.get().upsertedId != null){
+                    Log.v("EXAMPLE", "upserted document")
+                } else {
+                    Log.v("EXAMPLE", "updated document")
+                }
+            } else {
+                Log.e("EXAMPLE", "failed to update document with: ${task.error}")
+            }
+        }
+    }
+
+    // Used to check if employee is already clocked in
+    private fun isClockedIn(){
+        // Find location collection on mongodb
+        val user = realmApp.currentUser()
+        val mongoClient =
+                user!!.getMongoClient("mongodb-atlas") // service for MongoDB Atlas cluster containing custom user data
+        val mongoDatabase =
+                mongoClient.getDatabase("tracker")
+        val mongoCollection =
+                mongoDatabase.getCollection("isclockedin")
+
+        // Find users document in collection with their id
+        val query = Document("_partition", "user="+user.id)
+        mongoCollection?.findOne(query)?.getAsync { task ->
+            if (task.isSuccess) {
+                // Latitude and Longitude in document
+                val clockedIn = task.get()["clockedIn"]
+                // Output location details in document to console
+                Log.v("EXAMPLE", "is user clocked in: $clockedIn")
+
+                // Go to clock out activity if employee is already clocked in
+                if(clockedIn == true){
+                    val intent = Intent(this@ClockInActivity, ClockOutActivity::class.java)
+                    startActivity(intent)
+                }
+            } else {
+                Log.e("EXAMPLE", "failed to find document with: ${task.error}")
             }
         }
     }
@@ -188,7 +277,7 @@ class ClockInActivity : AppCompatActivity() {
                         Log.v("EXAMPLE", "successfully found longitude: $longitude")
 
                         // Enable button if employee location is equal to latitude & longitude in document
-                        button_clockin.isEnabled = latLocation == latitude && longLocation == longitude
+                        //button_clockin.isEnabled = latLocation == latitude && longLocation == longitude
                     } else {
                         Log.e("EXAMPLE", "failed to find document with: ${task.error}")
                     }
