@@ -7,18 +7,12 @@ import NoMatch from './pages/NoMatch';
 import Navbar from './components/Nav/Nav';
 import ClockOutTimes from './pages/ClockOutTimes';
 
-
-
 const App = () => (
-	
-    //<RealmAppProvider appId={APP_ID}>
 	<Router>
 		<div>
 			<Navbar />
 			<Switch>
-				{}
-				{/* <Route exact path="/" component={Home}/> */}
-				<Route exact path="/" component={ClockInTimes} /> 
+				<Route exact path="/" component={ClockInTimes} />
 				<Route exact path="/clockInTimes" component={ClockInTimes} />
 				<Route exact path="/clockInTimes/:id" component={ClockInDetail} />
 				<Route exact path="/clockOutTimes" component={ClockOutTimes} />
@@ -27,8 +21,6 @@ const App = () => (
 			</Switch>
 		</div>
 	</Router>
-	//</RealmAppProvider>
 );
-
 
 export default App;

@@ -43,7 +43,7 @@ class ClockInActivity : AppCompatActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
         }
         // For manager
-        else if(user?.customData?.get("name") == "jackmcnamee2@gmail.com"){
+        else if(user?.customData?.get("name") == "admin@biztech.com"){
             // if user is manager, start the add employee activity
             startActivity(Intent(this, ManagerActivity::class.java))
         }
@@ -198,7 +198,7 @@ class ClockInActivity : AppCompatActivity() {
                 showMessage("No location detected. Make sure location is enabled on the device.")
 
                 // Disable clock in button if location is not turned on
-                button_clockin.isEnabled = false
+                //button_clockin.isEnabled = false
             }
         }
     }

@@ -21,7 +21,7 @@ class ManagerActivity : AppCompatActivity(){
             // If no user is currently logged in, start the login activity so the user can authenticate
             startActivity(Intent(this, LoginActivity::class.java))
         }
-        else if(user?.customData?.get("name") != "jackmcnamee2@gmail.com"){
+        else if(user?.customData?.get("name") != "admin@biztech.com"){
             // If user is not the manager, start the clock in activity
             startActivity(Intent(this, ClockInActivity::class.java))
         }
