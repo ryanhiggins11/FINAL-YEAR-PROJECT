@@ -7,6 +7,7 @@ import android.location.Location
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.provider.Settings
 import android.util.Log
 import android.view.Menu
@@ -53,9 +54,6 @@ class ClockInActivity : AppCompatActivity() {
         }
         // For employees
         else {
-            // Check if employee is clocked in
-            isClockedIn()
-
             val config = SyncConfiguration.Builder(user!!, "user=${user!!.id}")
                 .build()
 
@@ -73,6 +71,9 @@ class ClockInActivity : AppCompatActivity() {
                 requestPermissions()
             }
         } else {
+            // Check if employee is clocked in
+            isClockedIn()
+            // Get employees location
             getLastLocation()
         }
     }
@@ -91,6 +92,8 @@ class ClockInActivity : AppCompatActivity() {
         locationRequest.interval = 20 * 1000;
 
         val clockInButton = findViewById<Button>(R.id.button_clockin)
+        // Button will be enabled after app checks if employee is already clocked in
+        clockInButton.isEnabled = false
 
         // Allow employee to clock in
         clockInButton.setOnClickListener {
@@ -176,6 +179,7 @@ class ClockInActivity : AppCompatActivity() {
             }
         }
 
+        // Find isclockedin collection on mongodb
         val mongoCollectionIsClockedIn =
                 mongoDatabase.getCollection("isclockedin")
 
@@ -216,12 +220,19 @@ class ClockInActivity : AppCompatActivity() {
                 val clockedIn = task.get()["clockedIn"]
                 // Output location details in document to console
                 Log.v("EXAMPLE", "is user clocked in: $clockedIn")
-
-                // Go to clock out activity if employee is already clocked in
-                if(clockedIn == true){
-                    val intent = Intent(this@ClockInActivity, ClockOutActivity::class.java)
-                    startActivity(intent)
-                }
+                // Wait for mongodb before moving to clock out activity
+                Handler().postDelayed(
+                    {
+                        // This method will be executed once the timer is over
+                        // Go to clock out activity if employee is already clocked in
+                        if(clockedIn == true){
+                            startActivity(Intent(this@ClockInActivity, ClockOutActivity::class.java))
+                        }
+                        // Enable clock in button if employee is not clocked in
+                        button_clockin.isEnabled = true
+                    },
+                    2000 // value in milliseconds
+                )
             } else {
                 Log.e("EXAMPLE", "failed to find document with: ${task.error}")
             }
@@ -231,7 +242,6 @@ class ClockInActivity : AppCompatActivity() {
     // https://www.tutorialspoint.com/how-to-track-the-current-location-latitude-and-longitude-in-an-android-device-using-kotlin
     // Finds the location of the employee using the FusedLocationProviderClient
     private fun getLastLocation() {
-
         // Check permission
         if (ActivityCompat.checkSelfPermission(
                 this,
