@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddEmployeeActivity">
+    tools:context=".EditEmployeeActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="471dp"
-        android:layout_height="510dp"
+        android:layout_width="487dp"
+        android:layout_height="613dp"
         android:layout_marginEnd="18dp"
         android:orientation="vertical"
         android:paddingLeft="24dp"
@@ -31,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/username"
-                android:inputType="textEmailAddress" />
+                android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -42,11 +42,57 @@
             android:layout_marginBottom="8dp">
 
             <EditText
-                android:id="@+id/input_password"
+                android:id="@+id/input_firstname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/password"
-                android:inputType="textPassword" />
+                android:hint="@string/firstname"
+                android:inputType="text" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="326dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+
+            <EditText
+                android:id="@+id/input_secondname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/secondname"
+                android:inputType="text" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="326dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+
+            <EditText
+                android:id="@+id/input_dob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/dob"
+                android:inputType="datetime" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="326dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+
+            <EditText
+                android:id="@+id/input_emergencyContact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/emergencyContact"
+                android:inputType="phone" />
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatButton
@@ -58,14 +104,5 @@
             android:text="@string/editEmployee" />
 
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="425dp"
-        android:layout_height="300dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/homepage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -68,19 +68,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="39dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:text="@string/addEmployeeTitle"
         android:textColor="@color/black"
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_changeLocation" />
 
     <Button
         android:id="@+id/button_addEmployee"
-        android:layout_width="138dp"
-        android:layout_height="60dp"
+        android:layout_width="128dp"
+        android:layout_height="47dp"
         android:layout_marginTop="36dp"
         android:layout_marginBottom="91dp"
         android:text="@string/addEmployee"
@@ -88,6 +89,36 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addEmployee" />
+        app:layout_constraintTop_toBottomOf="@+id/addEmployee"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/editEmployee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:text="@string/editEmployeeTitle"
+        android:textColor="@color/black"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_addEmployee" />
+
+    <Button
+        android:id="@+id/button_editEmployee"
+        android:layout_width="138dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="91dp"
+        android:text="@string/editEmployee"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editEmployee"
+        app:layout_constraintVertical_bias="0.356" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

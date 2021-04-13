@@ -8,14 +8,17 @@ import android.view.Menu
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import io.realm.mongodb.Credentials
+import io.realm.mongodb.mongo.options.UpdateOptions
+import org.bson.Document
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+
 /*
 * AddEmployeeActivity: Allow Manager to add employees
 */
 class AddEmployeeActivity : AppCompatActivity() {
     private lateinit var username: EditText
     private lateinit var password: EditText
-    //private lateinit var loginButton: Button
     private lateinit var createUserButton: Button
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,32 +26,19 @@ class AddEmployeeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_employee)
         username = findViewById(R.id.input_username)
         password = findViewById(R.id.input_password)
-        //loginButton = findViewById(R.id.button_login)
         createUserButton = findViewById(R.id.button_create)
 
-        //loginButton.setOnClickListener { login(false) }
         createUserButton.setOnClickListener {
-            registerEmployee(true)
+            registerEmployee()
             val intent = Intent(this@AddEmployeeActivity, ManagerActivity::class.java)
             startActivity(intent)
         }
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.activity_task_menu, menu)
         return true
     }
-
-/*    override fun onBackPressed() {
-        // Disable going back to ClockInActivity
-        moveTaskToBack(true)
-    }*/
-
-/*    private fun onLoginSuccess() {
-        // successful login ends this activity, bringing the user back to the ClockInActivity
-        finish()
-    }*/
 
     private fun onRegisterEmployeeFailed(errorMsg: String) {
         Log.e(TAG(), errorMsg)
@@ -63,33 +53,27 @@ class AddEmployeeActivity : AppCompatActivity() {
     }
 
     // handle user authentication (login) and account creation
-    private fun registerEmployee(createUser: Boolean) {
+    private fun registerEmployee() {
         if (!validateCredentials()) {
             onRegisterEmployeeFailed("Invalid username or password")
             return
         }
 
-        // while this operation completes, disable the buttons to login or create a new account
+        // while this operation completes, disable the buttons to create a new account
         createUserButton.isEnabled = false
-        //loginButton.isEnabled = false
 
         val username = this.username.text.toString()
         val password = this.password.text.toString()
 
-        if (createUser) {
-            // register a user using the Realm App we created in the RealmApp class
-            realmApp.emailPassword.registerUserAsync(username, password) {
-                // re-enable the buttons after user registration returns a result
-                createUserButton.isEnabled = true
-                //loginButton.isEnabled = true
-                if (!it.isSuccess) {
-                    onRegisterEmployeeFailed("Could not register user.")
-                    Log.e(TAG(), "Error: ${it.error}")
-                } else {
-                    Log.i(TAG(), "Successfully registered user.")
-                    /*// when the account has been created successfully, log in to the account
-                    login(false)*/
-                }
+        // register a user using the Realm App we created in the RealmApp class
+        realmApp.emailPassword.registerUserAsync(username, password) {
+            // re-enable the buttons after user registration returns a result
+            createUserButton.isEnabled = true
+            if (!it.isSuccess) {
+                onRegisterEmployeeFailed("Could not register user.")
+                Log.e(TAG(), "Error: ${it.error}")
+            } else {
+                Log.i(TAG(), "Successfully registered user.")
             }
         }
     }
