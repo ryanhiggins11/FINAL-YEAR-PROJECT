@@ -16,6 +16,8 @@ class ClockInDetail extends Component {
 			.catch(err => console.log(err));
 	}
 
+	
+
 	render() {
 		return (
 			<Container fluid>

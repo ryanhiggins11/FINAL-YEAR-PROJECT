@@ -22,9 +22,9 @@ class ClockOutDetail extends Component {
 				<Row>
 					<Col size="md-12">
 						<Jumbotron>
-							<h1>
-								{this.state.clockOutTime.name} clocked out at {this.state.clockOutTime.clockedOutTime}
-							</h1>
+							<table>
+								{this.state.clockOutTime.name} - Clocked into work at - {this.state.clockOutTime.clockedOutTime}
+							</table>
 						</Jumbotron>
 					</Col>
 				</Row>

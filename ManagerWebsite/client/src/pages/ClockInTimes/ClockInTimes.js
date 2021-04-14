@@ -83,16 +83,16 @@ class ClockInTimes extends React.Component {
 					</Col> */}
 					<Col size="md-6 sm-12">	
 					
-					<div classname="clock-in"><h1>Employees Clock-In Times:</h1></div>
+					<div classname="clock-in"><h1>Employee Clock-in Times</h1></div>
 						{this.state.clockInTimes.length ? (
 							<List>
 								
 								{this.state.clockInTimes.map(clockInTime => (
 									<ListItem key={clockInTime._id}>
 										<Link to={'/clockInTimes/' + clockInTime._id}>
-											<strong>
-												{clockInTime.name} Clocked in at {clockInTime.clockedInTime}
-											</strong>
+											<table>
+												{clockInTime.name} - Clocked into work at - {clockInTime.clockedInTime}
+											</table>
 										</Link>
 										<DeleteBtn onClick={() => this.deleteClockInTime(clockInTime._id)} />
 									</ListItem>
