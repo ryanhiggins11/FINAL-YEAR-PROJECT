@@ -26,4 +26,10 @@
     <string name="latLocation">Latitude</string>
     <string name="longLocation">Longitude</string>
     <string name="change_location">Change Location</string>
+    <string name="emergencyContact">Emergency Contact</string>
+    <string name="dob">Date of Birth</string>
+    <string name="secondname">Second Name</string>
+    <string name="firstname">First Name</string>
+    <string name="editEmployee">Edit</string>
+    <string name="editEmployeeTitle">Edit Employee Details</string>
 </resources>

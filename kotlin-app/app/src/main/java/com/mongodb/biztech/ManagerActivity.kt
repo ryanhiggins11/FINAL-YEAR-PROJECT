@@ -12,6 +12,7 @@ import io.realm.mongodb.User
 class ManagerActivity : AppCompatActivity(){
     private var user: User? = null
     private lateinit var addEmployeeButton: Button
+    private lateinit var editEmployeeButton: Button
     private lateinit var changeLocationButton: Button
 
     override fun onStart() {
@@ -35,6 +36,14 @@ class ManagerActivity : AppCompatActivity(){
         // Go to add employee activity
         addEmployeeButton.setOnClickListener {
             val intent = Intent(this@ManagerActivity, AddEmployeeActivity::class.java)
+            startActivity(intent)
+        }
+
+        editEmployeeButton = findViewById(R.id.button_editEmployee)
+
+        // Go to edit employee activity
+        editEmployeeButton.setOnClickListener {
+            val intent = Intent(this@ManagerActivity, EditEmployeeActivity::class.java)
             startActivity(intent)
         }
 

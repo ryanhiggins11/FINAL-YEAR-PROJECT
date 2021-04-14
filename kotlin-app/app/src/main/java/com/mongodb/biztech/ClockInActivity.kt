@@ -48,14 +48,14 @@ class ClockInActivity : AppCompatActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
         }
         // For manager
-        else if(user?.customData?.get("name") == "jackmcnamee2@gmail.com"){
+        else if(user?.customData?.get("name") == "admin@biztech.com"){
             // if user is manager, start the add employee activity
             startActivity(Intent(this, ManagerActivity::class.java))
         }
         // For employees
-        else {
+        else{
             val config = SyncConfiguration.Builder(user!!, "user=${user!!.id}")
-                .build()
+                    .build()
 
             // Sync all realm changes via a new instance, and when that instance has been successfully created connect it to an on-screen list (a recycler view)
             Realm.getInstanceAsync(config, object : Realm.Callback() {
@@ -64,17 +64,16 @@ class ClockInActivity : AppCompatActivity() {
                     this@ClockInActivity.clockInRealm = realm
                 }
             })
-        }
-
-        if (!checkPermissions()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions()
+            if (!checkPermissions()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions()
+                }
+            } else {
+                // Check if employee is clocked in
+                isClockedIn()
+                // Get employees location
+                getLastLocation()
             }
-        } else {
-            // Check if employee is clocked in
-            isClockedIn()
-            // Get employees location
-            getLastLocation()
         }
     }
 
@@ -203,7 +202,7 @@ class ClockInActivity : AppCompatActivity() {
 
     // Used to check if employee is already clocked in
     private fun isClockedIn(){
-        // Find location collection on mongodb
+        // Find isclockedin collection on mongodb
         val user = realmApp.currentUser()
         val mongoClient =
                 user!!.getMongoClient("mongodb-atlas") // service for MongoDB Atlas cluster containing custom user data
@@ -212,11 +211,32 @@ class ClockInActivity : AppCompatActivity() {
         val mongoCollection =
                 mongoDatabase.getCollection("isclockedin")
 
-        // Find users document in collection with their id
+        // Find document in collection with user's ID
         val query = Document("_partition", "user="+user.id)
-        mongoCollection?.findOne(query)?.getAsync { task ->
+        // Update document with false
+        val updateIsClockedIn = Document("_partition", "user="+user.id).append("clockedIn", false)
+        // Allow upsert (if document not found, create one)
+        val updateOptions = UpdateOptions().upsert(true)
+        // Update/upsert document
+        mongoCollection?.updateOne(query, updateIsClockedIn, updateOptions)?.getAsync { task ->
             if (task.isSuccess) {
-                // Latitude and Longitude in document
+                if(task.get().upsertedId != null){
+                    Log.v("EXAMPLE", "upserted document")
+                } else {
+                    Log.v("EXAMPLE", "updated document")
+                }
+            } else {
+                Log.e("EXAMPLE", "failed to update document with: ${task.error}")
+            }
+        }
+
+        // Find users document in collection with their id
+        val queryTwo = Document("_partition", "user="+user.id)
+        mongoCollection?.findOne(queryTwo)?.getAsync { task ->
+            if (!task.isSuccess) {
+                Log.e("EXAMPLE", "failed to find document with: ${task.error}")
+            } else {
+                // Clocked in true or false in document
                 val clockedIn = task.get()["clockedIn"]
                 // Output location details in document to console
                 Log.v("EXAMPLE", "is user clocked in: $clockedIn")
@@ -233,8 +253,6 @@ class ClockInActivity : AppCompatActivity() {
                     },
                     2000 // value in milliseconds
                 )
-            } else {
-                Log.e("EXAMPLE", "failed to find document with: ${task.error}")
             }
         }
     }

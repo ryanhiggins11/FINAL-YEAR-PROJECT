@@ -31,6 +31,7 @@
         <activity android:name=".ResetPasswordActivity"/>
         <activity android:name=".ManagerActivity"/>
         <activity android:name=".AddEmployeeActivity"/>
+        <activity android:name=".EditEmployeeActivity"/>
         <activity android:name=".ChangeLocationActivity"/>
         <activity android:name=".ClockOutActivity"/>
         <activity android:name=".BreakActivity"/>
