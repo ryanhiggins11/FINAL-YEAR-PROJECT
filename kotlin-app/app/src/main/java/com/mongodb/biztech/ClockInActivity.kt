@@ -26,6 +26,7 @@ import io.realm.mongodb.mongo.options.UpdateOptions
 import io.realm.mongodb.sync.SyncConfiguration
 import kotlinx.android.synthetic.main.activity_clock_in.*
 import org.bson.Document
+import java.lang.NullPointerException
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -69,8 +70,15 @@ class ClockInActivity : AppCompatActivity() {
                     requestPermissions()
                 }
             } else {
-                // Check if employee is clocked in
-                isClockedIn()
+                // Wait for 5 seconds before checking data pushed to mongodb from
+                // Clock out activity
+                Handler().postDelayed(
+                        {
+                            // Check if employee is clocked in
+                            isClockedIn()
+                        },
+                        5000 // value in milliseconds
+                )
                 // Get employees location
                 getLastLocation()
             }
@@ -160,9 +168,10 @@ class ClockInActivity : AppCompatActivity() {
         // Find document in collection with user's ID
         val queryOne = Document("_partition", "user="+user.id)
         // Update document with the current time
-        val updateClockInTimes = Document("_partition", "user="+user.id).append("clockedInTime", currentClockInTime.format
-                                                                    (DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)))
-                                                            .append("name", user?.customData?.get("name"))
+        val updateClockInTimes = Document("_partition", "user="+user.id)
+                                    .append("clockedInTime", currentClockInTime.format
+                                            (DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)))
+                                    .append("name", user?.customData?.get("name"))
         // Allow upsert (if document not found, create one)
         val updateOptions = UpdateOptions().upsert(true)
         // Update/upsert document
@@ -211,48 +220,58 @@ class ClockInActivity : AppCompatActivity() {
         val mongoCollection =
                 mongoDatabase.getCollection("isclockedin")
 
-        // Find document in collection with user's ID
-        val query = Document("_partition", "user="+user.id)
-        // Update document with false
-        val updateIsClockedIn = Document("_partition", "user="+user.id).append("clockedIn", false)
-        // Allow upsert (if document not found, create one)
-        val updateOptions = UpdateOptions().upsert(true)
-        // Update/upsert document
-        mongoCollection?.updateOne(query, updateIsClockedIn, updateOptions)?.getAsync { task ->
-            if (task.isSuccess) {
-                if(task.get().upsertedId != null){
-                    Log.v("EXAMPLE", "upserted document")
-                } else {
-                    Log.v("EXAMPLE", "updated document")
-                }
-            } else {
-                Log.e("EXAMPLE", "failed to update document with: ${task.error}")
-            }
-        }
-
         // Find users document in collection with their id
         val queryTwo = Document("_partition", "user="+user.id)
         mongoCollection?.findOne(queryTwo)?.getAsync { task ->
             if (!task.isSuccess) {
                 Log.e("EXAMPLE", "failed to find document with: ${task.error}")
             } else {
-                // Clocked in true or false in document
-                val clockedIn = task.get()["clockedIn"]
-                // Output location details in document to console
-                Log.v("EXAMPLE", "is user clocked in: $clockedIn")
-                // Wait for mongodb before moving to clock out activity
-                Handler().postDelayed(
-                    {
-                        // This method will be executed once the timer is over
-                        // Go to clock out activity if employee is already clocked in
-                        if(clockedIn == true){
-                            startActivity(Intent(this@ClockInActivity, ClockOutActivity::class.java))
+                try {
+                    // Wait for 1 seconds before checking data in mongodb
+                    Handler().postDelayed(
+                        {
+                            // Clocked in true or false in document
+                            val clockedIn = task.get()["clockedIn"]
+                            // Output is clocked in true or false to console
+                            Log.v("EXAMPLE", "is user clocked in: $clockedIn")
+                            // Go to clock out activity if employee is already clocked in
+                            if(clockedIn == true){
+                                startActivity(Intent(this@ClockInActivity,
+                                        ClockOutActivity::class.java))
+                            }
+                            // Enable clock in button if employee is not clocked in
+                            button_clockin.isEnabled = true
+                        },
+                        1000 // value in milliseconds
+                    )
+                }catch(e:NullPointerException){
+                    // Find document in collection with user's ID
+                    val query = Document("_partition", "user="+user.id)
+                    Log.v("EXAMPLE", "query: $query")
+                    // Update document with false
+                    val updateIsClockedIn = Document("_partition", "user="+user.id).append("clockedIn", false)
+                    // Allow upsert (if document not found, create one)
+                    val updateOptions = UpdateOptions().upsert(true)
+                    // Update/upsert document
+                    mongoCollection?.updateOne(query, updateIsClockedIn, updateOptions)?.getAsync { task ->
+                        if (task.isSuccess) {
+                            if(task.get().upsertedId != null){
+                                Log.v("EXAMPLE", "upserted document")
+                            } else {
+                                Log.v("EXAMPLE", "updated document")
+                            }
+                        } else {
+                            Log.e("EXAMPLE", "failed to update document with: ${task.error}")
                         }
-                        // Enable clock in button if employee is not clocked in
-                        button_clockin.isEnabled = true
-                    },
-                    2000 // value in milliseconds
-                )
+                    }// Wait for 1 seconds for data input above to go to mongodb
+                    Handler().postDelayed(
+                        {
+                            // Enable clock in button if employee is not clocked in
+                            button_clockin.isEnabled = true
+                        },
+                        1000 // value in milliseconds
+                    )
+                }
             }
         }
     }
