@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="300" height="300"src="https://i.ibb.co/6B5HKyK/logo-generator-for-a-mobile-gaming-company-with-a-lock-clipart-885c-el1.png">
+</p>
+
 # FINAL YEAR PROJECT
 This is the repository for our final year project called "Biztech". This application is developed by Daniel Gallagher, Ryan Higgins, Shane McCormack, and Jack McNamee. The project is an application developed in Kotlin to allowed employees of companies to clock into their workplace. We decided to design this to help stop the spread of covid-19 in the workplace.
 # PROJECT OVERVIEW
