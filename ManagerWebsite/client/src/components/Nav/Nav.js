@@ -5,7 +5,9 @@ class Navbar extends Component {
     render() {
         return(
             <header>
-                <h1> Biztech Management</h1>
+                 <h1> Welcome to Biztech</h1>
+                <img src = "./images/homepage.png" alt="BANNER IMAGE"/>
+                <h2> This area is for managment only </h2>
             </header>
 
         )
