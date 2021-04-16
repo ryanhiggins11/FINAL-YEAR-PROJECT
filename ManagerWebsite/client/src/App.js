@@ -6,6 +6,7 @@ import ClockOutDetail from './pages/ClockOutDetail';
 import NoMatch from './pages/NoMatch';
 import Navbar from './components/Nav/Nav';
 import ClockOutTimes from './pages/ClockOutTimes';
+import User from './pages/User';
 
 const App = () => (
 	<Router>
@@ -17,6 +18,7 @@ const App = () => (
 				<Route exact path="/clockInTimes/:id" component={ClockInDetail} />
 				<Route exact path="/clockOutTimes" component={ClockOutTimes} />
 				<Route exact path="/clockOutTimes/:id" component={ClockOutDetail}/>
+				<Route exact path="/user" component={User}/>
 				<Route component={NoMatch} />
 			</Switch>
 		</div>

@@ -3,7 +3,7 @@ import './DeleteBtn.css';
 
 const DeleteBtn = props => (
 	<span className="delete-btn" {...props}>
-		✗
+		- Remove ❌
 	</span>
 );
 

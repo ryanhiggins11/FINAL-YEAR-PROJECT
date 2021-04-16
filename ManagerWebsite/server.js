@@ -8,14 +8,14 @@ const PORT = process.env.PORT || 5000;
 // require db connection
 require('./models');
 
-var wwwhisper = require('connect-wwwhisper');
+//var wwwhisper = require('connect-wwwhisper');
 // app holds a reference to express or connect framework, it
 // may be named differently in your source file.
-app.use(wwwhisper());
+//app.use(wwwhisper());
 
 // Alternatively, if you don't want wwwhisper to insert
 // a logout iframe into HTML responses use.
-app.use(wwwhisper(false));
+//app.use(wwwhisper(false));
 
 // configure body parser for AJAX requests
 app.use(express.urlencoded({ extended: true }));

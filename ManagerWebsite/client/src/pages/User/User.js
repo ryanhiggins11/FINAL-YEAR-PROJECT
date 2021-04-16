@@ -10,11 +10,12 @@ import { Input, FormBtn } from '../../components/Form';
 class User extends Component {
 
 	state = {
-		users: [], // set collection name here
+		User: [],
+		name: '',
 		firstName: '',
-		lastName: '',
-		email: '',
-		password: ''
+		secondName: '',
+		dateOfBirth: '',
+		emergencyContact:''
 	};
 
 	componentDidMount() {
@@ -23,7 +24,7 @@ class User extends Component {
 
 	loadUsers = () => {
 		API.getUsers()
-			.then(res => this.setState({ users: res.data, firstName: '', lastName: '', email: '', password: ''}))
+			.then(res => this.setState({ User: res.data, name: '', firstName: '', secondName: '', dateOfBirth: '', emergencyContact: ''}))
 			.catch(err => console.log(err));
 	};
 
@@ -40,74 +41,43 @@ class User extends Component {
 		});
 	};
 
-	handleFormSubmit = event => {
-		event.preventDefault();
-		if (this.state.firstName && this.state.lastName && this.state.email && this.state.password) {
-			API.saveUser({
-				firstName: this.state.firstName,
-				lastName: this.state.lastName,
-                email: this.state.email,
-                password: this.state.password
-			})
-				.then(res => this.loadUsers())
-				.catch(err => console.log(err));
-		}
-	};
-
+	// handleFormSubmit = event => {
+	// 	event.preventDefault();
+	// 	if (this.state.name && this.state.firstName && this.state.secondName && this.state.dateOfBirth && this.state.emergencyContact) {
+	// 		API.saveUser({
+	// 			name: this.state.name,
+	// 			firstName: this.state.firstName,
+    //             secondName: this.state.secondName,
+    //             dateOfBirth: this.state.dateOfBirth,
+	// 			emergencyContact: this.state.emergencyContact
+	// 		})
+	// 			.then(res => this.loadUsers())
+	// 			.catch(err => console.log(err));
+	// 	}
+	// };
+	
 	render() {
+		console.log(this.state.User)
 		return (
 			<Container fluid>
 				<Row>
-					<Col size="md-6">
-							<h1>Enter Employee Details Here</h1>
-						<form>
-							<Input
-								value={this.state.firstName}
-								onChange={this.handleInputChange}
-								name="firstName"
-								placeholder="First Name (required)"
-							/>
-							<Input
-								value={this.state.lastName}
-								onChange={this.handleInputChange}
-								name="lastName"
-								placeholder="Last Name (required)"
-							/>
-                            <Input
-								value={this.state.email}
-								onChange={this.handleInputChange}
-								name="email"
-								placeholder="Email (required)"
-							/>
-							<Input
-								value={this.state.password}
-								onChange={this.handleInputChange}
-								type="password"
-								name="password"
-								placeholder="Password (required)"
-							/>
-
-							<FormBtn
-								disabled={!(this.state.firstName && this.state.lastName 
-                                            && this.state.email && this.state.password)}
-								onClick={this.handleFormSubmit}
-							>
-								Submit details
-							</FormBtn>
-						</form>
-					</Col>
 					<Col size="md-6 sm-12">
-							<h1>Employees</h1>
-						{this.state.users.length ? (
+						<h1>Employees</h1>
+						{this.state.User.length ? (
 							<List>
-								{this.state.users.map(user => (
-									<ListItem key={user._id}>
-										<Link to={'/users/' + user._id}>
-											<strong>
-												{user.firstName} {user.lastName}'s email is: {user.email}
-											</strong>
-										</Link>
-										<DeleteBtn onClick={() => this.deleteUser(user._id)} />
+								{this.state.User.map(User => (
+									<ListItem key={User._id}>
+										{/* <Link to={'/users/' + u._id}> */}
+											<table>
+												<td>Employee Email: {User.name}</td>
+												<td>Employee First Name: {User.firstName}</td>
+												<td>Employee Surname: {User.secondName}</td>
+												<td>Employee Date of Birth: {User.dateOfBirth}</td>
+												<td>Emergency Contact Number: {User.emergencyContact}</td>
+												<td><DeleteBtn onClick={() => this.deleteUser(User._id)} /></td>
+											</table>
+										{/* </Link> */}
+
 									</ListItem>
 								))}
 							</List>
