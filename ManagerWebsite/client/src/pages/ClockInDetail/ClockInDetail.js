@@ -16,24 +16,30 @@ class ClockInDetail extends Component {
 			.catch(err => console.log(err));
 	}
 
-	
-
 	render() {
 		return (
 			<Container fluid>
 				<Row>
-					<Col size="md-12">
+					<Col size="md-6 sm-12">
+
+						<div>
+							<header>
+                				<img width="30%" src = "../images/employee.png" alt="Details Banner"/>
+            				</header>
+						</div>
+
 						<Jumbotron>
-							<h1>
+							<h2>
 								{this.state.clockInTime.name} clocked in at {this.state.clockInTime.clockedInTime}
-							</h1>
+								
+							</h2>
 						</Jumbotron>
 					</Col>
 				</Row>
 
 				<Row>
 					<Col size="md-2">
-					<Link to="/">← Back to Clock-Out Times</Link>
+						<Link to="/">← Back to All Clock-In Times</Link>
 					</Col>
 				</Row>
 			</Container>

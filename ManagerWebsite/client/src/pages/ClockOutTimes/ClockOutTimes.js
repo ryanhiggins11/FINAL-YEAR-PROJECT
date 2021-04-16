@@ -45,6 +45,13 @@ class ClockOutTimes extends React.Component {
 				<Row>
 					{}
 					<Col size="md-6 sm-12">	
+					
+					<div classname="banner-out">
+						<header>
+                			<img width="30%" src = "./images/Clockout-Banner.png" alt="Clock out Banner"/>
+            			</header>
+					</div>
+
 					<div classname="clock-out"><h1>Employees Clock-Out Times:</h1></div>
 						{this.state.clockOutTimes.length ? (
 							<List>
@@ -52,16 +59,16 @@ class ClockOutTimes extends React.Component {
 								{this.state.clockOutTimes.map(clockOutTimes => (
 									<ListItem key={clockOutTimes._id}>
 										<Link to={'/clockOutTimes/' + clockOutTimes._id}>
-											<strong>
-												{clockOutTimes.name} Clocked out at {clockOutTimes.clockedOutTime}
-											</strong>
+											<table>
+												<td>{clockOutTimes.name} Clocked out at {clockOutTimes.clockedOutTime}</td>
+												<td><DeleteBtn onClick={() => this.deleteClockOutTime(clockOutTimes._id)} /></td>
+											</table>
 										</Link>
-										<DeleteBtn onClick={() => this.deleteClockOutTime(clockOutTimes._id)} /> 
 									</ListItem>
 								))}
 							</List>
 						) : (
-							<h3>No Results to Display</h3>
+							<h3>No Results Times To Display</h3>
 						)}
 						<a href="clockInTimes"><button>Clock-In Times</button></a>
 					</Col>

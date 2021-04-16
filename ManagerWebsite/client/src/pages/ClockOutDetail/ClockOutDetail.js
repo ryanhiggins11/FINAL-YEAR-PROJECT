@@ -21,9 +21,16 @@ class ClockOutDetail extends Component {
 			<Container fluid>
 				<Row>
 					<Col size="md-12">
+
+						<div>
+							<header>
+                				<img width="30%" src = "../images/employee.png" alt="Details Banner"/>
+            				</header>
+						</div>
+
 						<Jumbotron>
 							<table>
-								{this.state.clockOutTime.name} - Clocked into work at - {this.state.clockOutTime.clockedOutTime}
+								<h2>{this.state.clockOutTime.name} - Clocked out of work at - {this.state.clockOutTime.clockedOutTime}</h2>
 							</table>
 						</Jumbotron>
 					</Col>

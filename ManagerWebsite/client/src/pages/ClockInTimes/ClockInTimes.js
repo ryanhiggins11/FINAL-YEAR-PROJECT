@@ -55,35 +55,16 @@ class ClockInTimes extends React.Component {
 		return (
 			<Container fluid>
 				<Row>
-					{/* <Col size="md-6">
-						<Jumbotron>
-							<h1>Enter Employee and Clock In Times</h1>
-						</Jumbotron>
-						<form>
-							<Input
-								value={this.state.employee}
-								onChange={this.handleInputChange}
-								name="employee"
-								placeholder="Employee (required)"
-							/>
-							<Input
-								value={this.state.clockedInTime}
-								onChange={this.handleInputChange}
-								name="clockedInTime"
-								placeholder="Clock In Time (required)"
-							/>
-
-							<FormBtn
-								disabled={!(this.state.clockedInTime && this.state.employee)}
-								onClick={this.handleFormSubmit}
-							>
-								Submit time
-							</FormBtn>
-						</form>
-					</Col> */}
 					<Col size="md-6 sm-12">	
 					
+					<div>
+						<header>
+                			<img width="30%" src = "./images/Clockin-Banner.png" alt="Clock in Banner"/>
+            			</header>
+					</div>
+
 					<div classname="clock-in"><h1>Employee Clock-in Times</h1></div>
+					
 						{this.state.clockInTimes.length ? (
 							<List>
 								
@@ -91,19 +72,21 @@ class ClockInTimes extends React.Component {
 									<ListItem key={clockInTime._id}>
 										<Link to={'/clockInTimes/' + clockInTime._id}>
 											<table>
-												{clockInTime.name} - Clocked into work at - {clockInTime.clockedInTime}
+												<td>{clockInTime.name} - Clocked into work at - {clockInTime.clockedInTime}</td>
+												<td><DeleteBtn onClick={() => this.deleteClockInTime(clockInTime._id)} /></td> 
 											</table>
 										</Link>
-										<DeleteBtn onClick={() => this.deleteClockInTime(clockInTime._id)} />
+										{/* <td><DeleteBtn onClick={() => this.deleteClockInTime(clockInTime._id)}/></td>  */}
 									</ListItem>
 									
 								))}
 							</List>
 							
 						) : (
-							<h3>No Results to Display</h3>
+							<h3>No Results Times To Display</h3>
 						)}
 						<a href="clockOutTimes"><button>Clock-Out Times</button></a>
+						<a href="user"><button>Employee Details</button></a>
 					</Col>
 				</Row>
 			</Container>
