@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import io.realm.mongodb.Credentials
+import io.realm.mongodb.mongo.MongoCollection
 import io.realm.mongodb.mongo.options.UpdateOptions
 import org.bson.Document
 
@@ -56,14 +57,14 @@ class EditEmployeeActivity : AppCompatActivity() {
         else -> true
     }
 
-    // handle user authentication (login) and account creation
+    // Manager can edit employee details
     private fun editEmployee() {
         if (!validateCredentials()) {
             onEditEmployeeFailed("Invalid username")
             return
         }
 
-        // while this operation completes, disable the button to edit employee details
+        // While this operation completes, disable the button to edit employee details
         editUserButton.isEnabled = false
 
         val username = this.username.text.toString()
@@ -80,10 +81,17 @@ class EditEmployeeActivity : AppCompatActivity() {
             mongoClient.getDatabase("tracker")
         val mongoCollection =
             mongoDatabase.getCollection("User")
+
+        // Find users collection that's used for website
+        val mongoCollectionUsers =
+                mongoDatabase.getCollection("users")
+
         val queryFilter = Document("name", username)
+
         mongoCollection.findOne(queryFilter)
             .getAsync { task ->
                 if (task.isSuccess) {
+                    val id = task.get()["_id"]
                     val partition = task.get()["_partition"]
                     Log.v("EXAMPLE", "successfully found partition key: $partition")
 
@@ -91,6 +99,7 @@ class EditEmployeeActivity : AppCompatActivity() {
                     val queryOne = Document("name", username)
                     // Update document with the user details
                     val employeeDetails = Document("_partition", partition)
+                                                .append("_id", id)
                                                 .append("name", username)
                                                 .append("firstName", fName)
                                                 .append("secondName", sName)
@@ -98,10 +107,23 @@ class EditEmployeeActivity : AppCompatActivity() {
                                                 .append("emergencyContact", eContact)
                     // Allow upsert (if document not found, create one)
                     val updateOptions = UpdateOptions().upsert(true)
-                    // Update/upsert document
+                    // Update/upsert document in User collection
                     mongoCollection?.updateOne(queryOne, employeeDetails, updateOptions)?.getAsync { task ->
                         if (task.isSuccess) {
-                            if(task.get().upsertedId != null){
+                            if (task.get().upsertedId != null) {
+                                Log.v("EXAMPLE", "upserted document")
+                            } else {
+                                Log.v("EXAMPLE", "updated document")
+                            }
+                        } else {
+                            Log.e("EXAMPLE", "failed to update document with: ${task.error}")
+                        }
+                    }
+
+                    // Update/upsert document in users collection
+                    mongoCollectionUsers?.updateOne(queryOne, employeeDetails, updateOptions)?.getAsync { task ->
+                        if (task.isSuccess) {
+                            if (task.get().upsertedId != null) {
                                 Log.v("EXAMPLE", "upserted document")
                             } else {
                                 Log.v("EXAMPLE", "updated document")
@@ -115,5 +137,6 @@ class EditEmployeeActivity : AppCompatActivity() {
                     onEditEmployeeFailed("Couldn't update employee details")
                 }
             }
+
     }
 }
