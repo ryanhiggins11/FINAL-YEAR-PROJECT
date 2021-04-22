@@ -32,4 +32,13 @@
     <string name="firstname">First Name</string>
     <string name="editEmployee">Edit</string>
     <string name="editEmployeeTitle">Edit Employee Details</string>
+    <string name="btn_authorize">Authorize</string>
+    <string name="cancel">Cancel</string>
+    <string name="enable_biometric_login">Enable Biometric Authentication</string>
+    <string name="enable_biometrics">Enable Biometrics</string>
+    <string name="prompt_info_title">BizTech Authentication</string>
+    <string name="prompt_info_subtitle">Please login to get access</string>
+    <string name="prompt_info_description">Using Android biometric authentication</string>
+    <string name="prompt_info_use_app_password">Use app password</string>
+    <string name="secret_key_name">biometric_sample_encryption_key</string>
 </resources>
