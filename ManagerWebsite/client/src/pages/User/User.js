@@ -7,6 +7,8 @@ import { Col, Row, Container } from '../../components/Grid';
 import { List, ListItem } from '../../components/List';
 import { Input, FormBtn } from '../../components/Form';
 
+
+
 class User extends Component {
 
 	state = {
@@ -41,51 +43,37 @@ class User extends Component {
 		});
 	};
 
-	// handleFormSubmit = event => {
-	// 	event.preventDefault();
-	// 	if (this.state.name && this.state.firstName && this.state.secondName && this.state.dateOfBirth && this.state.emergencyContact) {
-	// 		API.saveUser({
-	// 			name: this.state.name,
-	// 			firstName: this.state.firstName,
-    //             secondName: this.state.secondName,
-    //             dateOfBirth: this.state.dateOfBirth,
-	// 			emergencyContact: this.state.emergencyContact
-	// 		})
-	// 			.then(res => this.loadUsers())
-	// 			.catch(err => console.log(err));
-	// 	}
-	// };
 	
 	render() {
 		console.log(this.state.User)
 		return (
-			<Container fluid>
-				<Row>
-					<Col size="md-6 sm-12">
-						<h1>Employees</h1>
+			<Container fluid>		
+						<h1>Employee Details</h1>
 						{this.state.User.length ? (
 							<List>
 								{this.state.User.map(User => (
-									<ListItem key={User._id}>
-										{/* <Link to={'/users/' + u._id}> */}
-											<table>
-												<td>Employee Email: {User.name}</td>
-												<td>Employee First Name: {User.firstName}</td>
-												<td>Employee Surname: {User.secondName}</td>
-												<td>Employee Date of Birth: {User.dateOfBirth}</td>
-												<td>Emergency Contact Number: {User.emergencyContact}</td>
+									<table key={User._id}>
+											<thead>
+												<tr>
+												<td><th>Employee Email: {User.name}</th></td>
+												<td><th>First Name: {User.firstName}</th></td>
+												<td><th>Surname: {User.firstName}</th></td>
+												<td><th>DOB: {User.dateOfBirth}</th></td>
+												<td><th>Emergency Contact Number: {User.emergencyContact}</th></td>
 												<td><DeleteBtn onClick={() => this.deleteUser(User._id)} /></td>
-											</table>
-										{/* </Link> */}
-
-									</ListItem>
+												</tr>
+											</thead>
+									</table>
 								))}
-							</List>
+								</List>
 						) : (
 							<h3>No Results to Display</h3>
 						)}
-					</Col>
-				</Row>
+					
+					<a href="clockOutTimes"><button>Clock-Out Times</button></a>
+					<a href="clockInTimes"><button>Clock-In Times</button></a>
+				
+				
 			</Container>
 		);
 	}
