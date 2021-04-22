@@ -1,24 +1,43 @@
 package com.mongodb.biztech
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricPrompt
+import com.mongodb.biztech.model.UserToken
 import io.realm.mongodb.Credentials
 import io.realm.mongodb.User
 
+
 /*
 * LoginActivity: launched whenever a user isn't already logged in. Allows a user to enter email
-* and password credentials to log in to an existing account or create a new account.
+* and password credentials to log in to an existing account or create a new account. User can
+* also use biometric authentication to log in.
 */
 class LoginActivity : AppCompatActivity() {
-    private var user: User? = null
     private lateinit var username: EditText
     private lateinit var password: EditText
     private lateinit var loginButton: Button
+    private lateinit var enableBiometricsButton: Button
+    private lateinit var biometricPrompt: BiometricPrompt
+    private val sharedPrefFile = "kotlinsharedpreference"
+    private val cryptographyManager = CryptographyManager()
+    private val ciphertextWrapper
+        get() = cryptographyManager.getCiphertextWrapperFromSharedPrefs(
+                applicationContext,
+                "biometric_prefs",
+                Context.MODE_PRIVATE,
+                "ciphertext_wrapper"
+        )
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,8 +45,34 @@ class LoginActivity : AppCompatActivity() {
         username = findViewById(R.id.input_username)
         password = findViewById(R.id.input_password)
         loginButton = findViewById(R.id.button_login)
+        enableBiometricsButton = findViewById(R.id.button_enable_biometrics)
 
-        loginButton.setOnClickListener { login(false) }
+        loginButton.setOnClickListener { login() }
+
+        val canAuthenticate = BiometricManager.from(applicationContext).canAuthenticate()
+        if (canAuthenticate == BiometricManager.BIOMETRIC_SUCCESS) {
+            enableBiometricsButton.visibility = View.VISIBLE
+            enableBiometricsButton.setOnClickListener {
+                if (ciphertextWrapper != null) {
+                    showBiometricPromptForDecryption()
+                } else {
+                    startActivity(Intent(this, EnableBiometricLoginActivity::class.java))
+                }
+            }
+        } else {
+            enableBiometricsButton.visibility = View.INVISIBLE
+        }
+    }
+
+    // Biometric authentication starts when app opened if
+    // user has enabled it previously
+    override fun onResume() {
+        super.onResume()
+        if (ciphertextWrapper != null) {
+            if (UserToken.password == null) {
+                showBiometricPromptForDecryption()
+            }
+        }
     }
 
     override fun onBackPressed() {
@@ -53,7 +98,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     // handle user authentication (login) and account creation
-    private fun login(createUser: Boolean) {
+    private fun login() {
         if (!validateCredentials()) {
             onLoginFailed("Invalid username or password")
             return
@@ -65,37 +110,61 @@ class LoginActivity : AppCompatActivity() {
         val username = this.username.text.toString()
         val password = this.password.text.toString()
 
-//        if (createUser) {
-//            // register a user using the Realm App we created in the RealmApp class
-//            realmApp.emailPassword.registerUserAsync(username, password) {
-//                // re-enable the buttons after user registration returns a result
-//                createUserButton.isEnabled = true
-//                loginButton.isEnabled = true
-//                if (!it.isSuccess) {
-//                    onLoginFailed("Could not register user.")
-//                    Log.e(TAG(), "Error: ${it.error}")
-//                } else {
-//                    Log.i(TAG(), "Successfully registered user.")
-//                    // when the account has been created successfully, log in to the account
-//                    login(false)
-//                }
-//            }
-//        } else {
-            // log in with the supplied username and password when the "Log in" button is pressed.
-            val creds = Credentials.emailPassword(username, password)
-            realmApp.loginAsync(creds) {
-                // re-enable the buttons after user login returns a result
-                loginButton.isEnabled = true
-                //createUserButton.isEnabled = true
-                if (!it.isSuccess) {
-                    onLoginFailed(it.error.message ?: "An error occurred.")
-                } else {
-                    val user = realmApp.currentUser()
-                    val customUserData : Any? = user?.customData?.get("name")
-                    Log.i("EXAMPLE", "Fetched custom user data: $customUserData")
-                    onLoginSuccess()
+        // log in with the supplied username and password when the "Log in" button is pressed.
+        val creds = Credentials.emailPassword(username, password)
+        realmApp.loginAsync(creds) {
+            // re-enable the buttons after user login returns a result
+            loginButton.isEnabled = true
+            if (!it.isSuccess) {
+                onLoginFailed(it.error.message ?: "An error occurred.")
+            } else {
+                val user = realmApp.currentUser()
+                val customUserData : Any? = user?.customData?.get("name")
+                Log.i("EXAMPLE", "Fetched custom user data: $customUserData")
+                onLoginSuccess()
+            }
+        }
+    }
+
+    // BIOMETRICS SECTION
+
+    @SuppressLint("CommitPrefEdits")
+    private fun showBiometricPromptForDecryption() {
+        ciphertextWrapper?.let { textWrapper ->
+            val secretKeyName = getString(R.string.secret_key_name)
+            val cipher = cryptographyManager.getInitializedCipherForDecryption(
+                    secretKeyName, textWrapper.initializationVector
+            )
+            biometricPrompt =
+                    BiometricPromptUtils.createBiometricPrompt(
+                            this,
+                            ::decryptPasswordFromStorage
+                    )
+            val promptInfo = BiometricPromptUtils.createPromptInfo(this)
+            biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(cipher))
+        }
+    }
+
+    private fun decryptPasswordFromStorage(authResult: BiometricPrompt.AuthenticationResult) {
+        ciphertextWrapper?.let { textWrapper ->
+            authResult.cryptoObject?.cipher?.let { it ->
+                val plaintext =
+                        cryptographyManager.decryptPassword(textWrapper.ciphertext, it)
+                UserToken.password = plaintext
+
+                // Get stored username from Shared Preferences
+                val sharedPreferences: SharedPreferences = this.getSharedPreferences(sharedPrefFile,Context.MODE_PRIVATE)
+                val sharedNameValue = sharedPreferences.getString("username_key","defaultname")
+
+                // Login with stored username and decrypted password
+                realmApp.loginAsync(Credentials.emailPassword(sharedNameValue.toString(), UserToken.password)){
+                    if (!it.isSuccess) {
+                        onLoginFailed(it.error.message ?: "Wrong email or password")
+                    } else {
+                        onLoginSuccess()
+                    }
                 }
-            //}
+            }
         }
     }
 }

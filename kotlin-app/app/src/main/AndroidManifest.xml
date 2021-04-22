@@ -28,6 +28,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity"/>
+        <activity android:name=".EnableBiometricLoginActivity"/>
         <activity android:name=".ResetPasswordActivity"/>
         <activity android:name=".ManagerActivity"/>
         <activity android:name=".AddEmployeeActivity"/>
