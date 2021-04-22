@@ -15,6 +15,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -45,6 +46,7 @@ class ClockInActivity : AppCompatActivity() {
         super.onStart()
         user = realmApp.currentUser()
         if (user == null) {
+            Log.d(TAG(), "No user")
             // If no user is currently logged in, start the login activity
             startActivity(Intent(this, LoginActivity::class.java))
         }
@@ -70,6 +72,8 @@ class ClockInActivity : AppCompatActivity() {
                     requestPermissions()
                 }
             } else {
+                // Get employees location
+                getLastLocation()
                 // Wait for 5 seconds before checking data pushed to mongodb from
                 // Clock out activity
                 Handler().postDelayed(
@@ -79,8 +83,6 @@ class ClockInActivity : AppCompatActivity() {
                         },
                         5000 // value in milliseconds
                 )
-                // Get employees location
-                getLastLocation()
             }
         }
     }
