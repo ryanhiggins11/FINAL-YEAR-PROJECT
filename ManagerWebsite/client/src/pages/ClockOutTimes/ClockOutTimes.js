@@ -71,6 +71,7 @@ class ClockOutTimes extends React.Component {
 							<h3>No Results Times To Display</h3>
 						)}
 						<a href="clockInTimes"><button>Clock-In Times</button></a>
+						<a href="user"><button>Employee Details</button></a>
 					</Col>
 				</Row>
 			</Container>
