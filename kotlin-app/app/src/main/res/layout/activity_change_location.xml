@@ -6,6 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".ChangeLocationActivity">
 
+    <!-- Change Location Page to allow manager to
+         change the location of the workplace-->
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="471dp"

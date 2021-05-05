@@ -8,21 +8,16 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
-import com.mongodb.biztech.model.location
-import io.realm.DynamicRealm
+import android.widget.Toast
 import io.realm.Realm
-import io.realm.RealmConfiguration
-import io.realm.kotlin.where
 import io.realm.mongodb.User
 import io.realm.mongodb.mongo.options.UpdateOptions
 import io.realm.mongodb.sync.SyncConfiguration
 import org.bson.Document
-import org.bson.types.ObjectId
 import kotlin.math.round
-import kotlin.properties.Delegates
-
 /*
-* ChangeLocationActivity: Allow Manager to set location of where employees have to clock in
+* ChangeLocationActivity: Allow manager to
+* change the location of where employees have to clock in
 */
 class ChangeLocationActivity : AppCompatActivity() {
     private var locationRealm: Realm? = null
@@ -66,8 +61,30 @@ class ChangeLocationActivity : AppCompatActivity() {
         }
     }
 
-    // Allows manager to change latitude and longitude of clock in point
+    private fun onChangeLocationFailed(errorMsg: String) {
+        Log.e(TAG(), errorMsg)
+        Toast.makeText(baseContext, errorMsg, Toast.LENGTH_LONG).show()
+    }
+
+    private fun onChangeLocationSuccess(successMsg: String) {
+        Log.i(TAG(), successMsg)
+        Toast.makeText(baseContext, successMsg, Toast.LENGTH_LONG).show()
+    }
+
+    private fun validateCredentials(): Boolean = when {
+        // zero-length usernames and passwords are not valid (or secure)
+        latitude.text.toString().isEmpty() -> false
+        longitude.text.toString().isEmpty() -> false
+        else -> true
+    }
+
+    // Functionality for changing location of clock in point
     private fun changeLocation() {
+        if (!validateCredentials()) {
+            onChangeLocationFailed("Invalid latitude or longitude")
+            return
+        }
+
         // Gets latitude and longitude values entered by manager
         val inputLatitude = this.latitude.text.toString().toDouble().round(3)
         val inputLongitude = this.longitude.text.toString().toDouble().round(3)
@@ -92,11 +109,14 @@ class ChangeLocationActivity : AppCompatActivity() {
             if (task.isSuccess) {
                 if(task.get().upsertedId != null){
                     Log.v("EXAMPLE", "upserted document")
+                    onChangeLocationSuccess("Set the location!")
                 } else {
                     Log.v("EXAMPLE", "updated document")
+                    onChangeLocationSuccess("Updated the location!")
                 }
             } else {
                 Log.e("EXAMPLE", "failed to update document with: ${task.error}")
+                onChangeLocationFailed("Failed to change location")
             }
         }
     }

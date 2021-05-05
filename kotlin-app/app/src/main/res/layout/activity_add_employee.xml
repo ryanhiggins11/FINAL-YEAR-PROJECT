@@ -6,6 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".AddEmployeeActivity">
 
+    <!-- Add Employee Page to allow manager
+          to add an employee to the app -->
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="471dp"
