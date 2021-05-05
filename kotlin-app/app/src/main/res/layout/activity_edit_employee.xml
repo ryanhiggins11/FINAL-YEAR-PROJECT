@@ -6,6 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".EditEmployeeActivity">
 
+    <!-- Edit Employee Details Page to allow manager
+            to edit an employees' details -->
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="487dp"

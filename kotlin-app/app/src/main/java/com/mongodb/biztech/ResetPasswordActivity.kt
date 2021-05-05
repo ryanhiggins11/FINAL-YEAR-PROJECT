@@ -10,18 +10,19 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import io.realm.mongodb.User
 /*
-* ResetPasswordActivity: Allow Employee to reset password
+* ResetPasswordActivity: Allow employee to reset their password.
 */
 class ResetPasswordActivity : AppCompatActivity(){
     private var user: User? = null
     private lateinit var password: EditText
+    private lateinit var confirmPassword: EditText
     private lateinit var resetPassword: Button
 
     override fun onStart() {
         super.onStart()
         user = realmApp.currentUser()
         if (user == null) {
-            // if no user is currently logged in, start the login activity so the user can authenticate
+            // If no user is currently logged in, start the login activity so the user can authenticate
             startActivity(Intent(this, LoginActivity::class.java))
         }
     }
@@ -34,10 +35,11 @@ class ResetPasswordActivity : AppCompatActivity(){
         StrictMode.setThreadPolicy(policy)
 
         password = findViewById(R.id.input_password)
+        confirmPassword = findViewById(R.id.input_password_confirm)
         resetPassword = findViewById(R.id.button_password_reset)
 
         resetPassword.setOnClickListener {
-            forgotPassword()
+            resetPassword()
             val intent = Intent(this@ResetPasswordActivity, ClockInActivity::class.java)
             startActivity(intent)
         }
@@ -48,26 +50,35 @@ class ResetPasswordActivity : AppCompatActivity(){
         Toast.makeText(baseContext, errorMsg, Toast.LENGTH_LONG).show()
     }
 
+    private fun onResetPasswordSuccess(successMsg: String) {
+        Log.i(TAG(), successMsg)
+        Toast.makeText(baseContext, successMsg, Toast.LENGTH_LONG).show()
+    }
+
     private fun validateCredentials(): Boolean = when {
         // zero-length passwords are not valid (or secure)
         password.text.toString().isEmpty() -> false
+        confirmPassword.text.toString().isEmpty() -> false
+        password.text.toString() != confirmPassword.text.toString() -> false
         else -> true
     }
 
-    private fun forgotPassword() {
+    private fun resetPassword() {
         if (!validateCredentials()) {
-            onResetPasswordFailed("Invalid password")
+            onResetPasswordFailed("Empty password, please try again")
             return
         }
 
-        // get employees email
+        // Get employees email
         val user = realmApp.currentUser()
         val email : Any? = user?.customData?.get("name")
 
-        // password that employee wants to change their password to
+        // Password that employee wants to change their password to
         val password = this.password.text.toString()
 
-        // changes employees password
-        realmApp.emailPassword.callResetPasswordFunction(email as String?, password)
+        // Change employees password
+        realmApp.emailPassword.callResetPasswordFunction(email as String, password)
+
+        onResetPasswordSuccess("Password changed!")
     }
 }

@@ -6,20 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".ManagerActivity">
 
-    <!-- Manager Page-->
+    <!-- Manager Page to add employees, edit employees' details,
+                and change location of the workplace -->
 
     <TextView
         android:id="@+id/managerTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="72dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="25dp"
         android:layout_marginEnd="73dp"
         android:layout_marginBottom="20dp"
         android:text="@string/manager_title"
         android:textColor="@color/black"
         android:textSize="45dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageView"
+        app:layout_constraintBottom_toTopOf="@+id/changeLocation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,10 +29,10 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="198dp"
-        android:layout_height="173dp"
+        android:layout_width="174dp"
+        android:layout_height="137dp"
         android:layout_marginStart="75dp"
-        android:layout_marginTop="29dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="76dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="34dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="32dp"
         android:text="@string/changeLocation"
         android:textColor="@color/black"
@@ -56,7 +57,7 @@
         android:id="@+id/button_changeLocation"
         android:layout_width="160dp"
         android:layout_height="60dp"
-        android:layout_marginTop="29dp"
+        android:layout_marginTop="16dp"
         android:text="@string/changeLocationButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -68,13 +69,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="32dp"
         android:text="@string/addEmployeeTitle"
         android:textColor="@color/black"
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintHorizontal_bias="0.614"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_changeLocation" />
 
@@ -97,20 +98,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="32dp"
         android:text="@string/editEmployeeTitle"
         android:textColor="@color/black"
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_addEmployee" />
 
     <Button
         android:id="@+id/button_editEmployee"
-        android:layout_width="138dp"
-        android:layout_height="60dp"
+        android:layout_width="128dp"
+        android:layout_height="47dp"
         android:layout_marginTop="36dp"
         android:layout_marginBottom="91dp"
         android:text="@string/editEmployee"
@@ -119,6 +120,6 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editEmployee"
-        app:layout_constraintVertical_bias="0.356" />
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

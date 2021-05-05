@@ -8,7 +8,11 @@ import android.view.MenuItem
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import io.realm.mongodb.User
-
+/*
+* ManagerActivity: Managers page where they can
+* add employees, edit employee details, and
+* change the location of the workplace
+*/
 class ManagerActivity : AppCompatActivity(){
     private var user: User? = null
     private lateinit var addEmployeeButton: Button
@@ -19,7 +23,7 @@ class ManagerActivity : AppCompatActivity(){
         super.onStart()
         user = realmApp.currentUser()
         if (user == null) {
-            // If no user is currently logged in, start the login activity so the user can authenticate
+            // If no user is currently logged in, start the login activity
             startActivity(Intent(this, LoginActivity::class.java))
         }
         else if(user?.customData?.get("name") != "admin@biztech.com"){
@@ -31,25 +35,23 @@ class ManagerActivity : AppCompatActivity(){
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manager)
-        addEmployeeButton = findViewById(R.id.button_addEmployee)
 
         // Go to add employee activity
+        addEmployeeButton = findViewById(R.id.button_addEmployee)
         addEmployeeButton.setOnClickListener {
             val intent = Intent(this@ManagerActivity, AddEmployeeActivity::class.java)
             startActivity(intent)
         }
 
+        // Go to edit employee details activity
         editEmployeeButton = findViewById(R.id.button_editEmployee)
-
-        // Go to edit employee activity
         editEmployeeButton.setOnClickListener {
             val intent = Intent(this@ManagerActivity, EditEmployeeActivity::class.java)
             startActivity(intent)
         }
 
-        changeLocationButton = findViewById(R.id.button_changeLocation)
-
         // Go to change location activity
+        changeLocationButton = findViewById(R.id.button_changeLocation)
         changeLocationButton.setOnClickListener {
             val intent = Intent(this@ManagerActivity, ChangeLocationActivity::class.java)
             startActivity(intent)
@@ -83,7 +85,7 @@ class ManagerActivity : AppCompatActivity(){
     }
 
     override fun onBackPressed() {
-        // Disable going back to ClockInActivity
+        // Disable going back to LoginActivity
         moveTaskToBack(true)
     }
 }

@@ -8,13 +8,11 @@ import android.view.Menu
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import io.realm.mongodb.Credentials
-import io.realm.mongodb.mongo.MongoCollection
 import io.realm.mongodb.mongo.options.UpdateOptions
 import org.bson.Document
-
 /*
-* EditEmployeeActivity: Allow Manager to edit employees details
+* EditEmployeeActivity: Allow manager to edit an
+* employees' details
 */
 class EditEmployeeActivity : AppCompatActivity() {
     private lateinit var username: EditText
@@ -22,7 +20,7 @@ class EditEmployeeActivity : AppCompatActivity() {
     private lateinit var secondName: EditText
     private lateinit var dateOfBirth: EditText
     private lateinit var emergencyContact: EditText
-    private lateinit var editUserButton: Button
+    private lateinit var editEmployeeButton: Button
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,9 +30,9 @@ class EditEmployeeActivity : AppCompatActivity() {
         secondName = findViewById(R.id.input_secondname)
         dateOfBirth = findViewById(R.id.input_dob)
         emergencyContact = findViewById(R.id.input_emergencyContact)
-        editUserButton = findViewById(R.id.button_create)
+        editEmployeeButton = findViewById(R.id.button_create)
 
-        editUserButton.setOnClickListener {
+        editEmployeeButton.setOnClickListener {
             editEmployee()
             val intent = Intent(this@EditEmployeeActivity, ManagerActivity::class.java)
             startActivity(intent)
@@ -46,9 +44,16 @@ class EditEmployeeActivity : AppCompatActivity() {
         return true
     }
 
+    // Message for when editing an employees' details failed
     private fun onEditEmployeeFailed(errorMsg: String) {
         Log.e(TAG(), errorMsg)
         Toast.makeText(baseContext, errorMsg, Toast.LENGTH_LONG).show()
+    }
+
+    // Message for when editing an employees' details succeeded
+    private fun onEditEmployeeSuccess(successMsg: String) {
+        Log.i(TAG(), successMsg)
+        Toast.makeText(baseContext, successMsg, Toast.LENGTH_LONG).show()
     }
 
     private fun validateCredentials(): Boolean = when {
@@ -57,7 +62,7 @@ class EditEmployeeActivity : AppCompatActivity() {
         else -> true
     }
 
-    // Manager can edit employee details
+    // Functionality to edit an employees' details
     private fun editEmployee() {
         if (!validateCredentials()) {
             onEditEmployeeFailed("Invalid username")
@@ -65,7 +70,7 @@ class EditEmployeeActivity : AppCompatActivity() {
         }
 
         // While this operation completes, disable the button to edit employee details
-        editUserButton.isEnabled = false
+        editEmployeeButton.isEnabled = false
 
         val username = this.username.text.toString()
         val fName = this.firstName.text.toString()
@@ -112,8 +117,10 @@ class EditEmployeeActivity : AppCompatActivity() {
                         if (task.isSuccess) {
                             if (task.get().upsertedId != null) {
                                 Log.v("EXAMPLE", "upserted document")
+                                onEditEmployeeSuccess("Employee details created!")
                             } else {
                                 Log.v("EXAMPLE", "updated document")
+                                onEditEmployeeSuccess("Employee details updated!")
                             }
                         } else {
                             Log.e("EXAMPLE", "failed to update document with: ${task.error}")
@@ -137,6 +144,5 @@ class EditEmployeeActivity : AppCompatActivity() {
                     onEditEmployeeFailed("Couldn't update employee details")
                 }
             }
-
     }
 }
