@@ -8,6 +8,9 @@ import Navbar from './components/Nav/Nav';
 import ClockOutTimes from './pages/ClockOutTimes';
 import User from './pages/User';
 
+/*
+*Gets path for the pages and then links them to the page
+*/
 const App = () => (
 	<Router>
 		<div>

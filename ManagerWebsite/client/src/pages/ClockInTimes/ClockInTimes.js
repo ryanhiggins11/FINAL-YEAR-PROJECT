@@ -10,28 +10,33 @@ import { Input, FormBtn } from '../../components/Form';
 
 
 class ClockInTimes extends React.Component {
+	//state with 3 javascript objects delcared
 	state = {
 		clockInTimes: [],
 		name: '',
 		clockedInTime: ''
 	};
 
+	//loads clock in times
 	componentDidMount() {
 		this.loadClockInTimes();
 	}
 
+	//gets clock in times
 	loadClockInTimes = () => {
 		API.getClockInTimes()
 			.then(res => this.setState({ clockInTimes: res.data, name: '', clockedInTime: '' }))
 			.catch(err => console.log(err));
 	};
 
+	//deletes clock in times
 	deleteClockInTime = id => {
 		API.deleteClockInTime(id)
 			.then(res => this.loadClockInTimes())
 			.catch(err => console.log(err));
 	};
 
+	
 	handleInputChange = event => {
 		const { name, value } = event.target;
 		this.setState({
@@ -39,18 +44,15 @@ class ClockInTimes extends React.Component {
 		});
 	};
 
-	/* handleFormSubmit = event => {
-	 	event.preventDefault();
-	 	if (this.state.employee && this.state.clockedInTime) {
-	 		API.saveClockInTime({
-	 			employee: this.state.employee,
-	 			clockedInTime: this.state.clockedInTime
-	 		})
-	 			.then(res => this.loadClockInTimes())
-	 			.catch(err => console.log(err));
-		}
-	 };*/
 
+
+	 /*
+	 *renders image
+	 *displays clock in times
+	 *gets clock in times
+	 *delete button if you want to remove a clock in time
+	 *two buttons to bring to clock out and employee details page
+	 */
 	render() {
 		return (
 			<Container fluid>

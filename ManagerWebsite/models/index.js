@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const URI = require('../config/index');
 
+//Connects this to the database
 mongoose.connect(process.env.MONGODB_URI || URI);
 
 // When successfully connected

@@ -5,17 +5,23 @@ import Jumbotron from '../../components/Jumbotron';
 import API from '../../utils/API';
 
 class ClockOutDetail extends Component {
+	//object declared clockoutime
 	state = {
 		clockOutTime: {}
 	};
 
-
+	//gets clock out time
 	componentDidMount() {
 		API.getClockOutTime(this.props.match.params.id)
 			.then(res => this.setState({ clockOutTime: res.data }))
 			.catch(err => console.log(err));
 	}
 
+	/*
+	*renders images
+	*displays name of employee and then displays clock out time
+	*Back button to clock out times
+	*/
 	render() {
 		return (
 			<Container fluid>

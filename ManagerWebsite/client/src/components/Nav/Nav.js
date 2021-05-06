@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import './Nav.css';
 
+/*
+*Navbar
+*Image displayed
+*/
+
 class Navbar extends Component {
     render() {
         return(
