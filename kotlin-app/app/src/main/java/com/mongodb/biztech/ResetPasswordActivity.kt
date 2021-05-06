@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import io.realm.mongodb.User
 /*
-* ResetPasswordActivity: Allow employee to reset their password.
+* ResetPasswordActivity: Allow employee to reset their password
 */
 class ResetPasswordActivity : AppCompatActivity(){
     private var user: User? = null
@@ -40,8 +40,6 @@ class ResetPasswordActivity : AppCompatActivity(){
 
         resetPassword.setOnClickListener {
             resetPassword()
-            val intent = Intent(this@ResetPasswordActivity, ClockInActivity::class.java)
-            startActivity(intent)
         }
     }
 
@@ -59,13 +57,18 @@ class ResetPasswordActivity : AppCompatActivity(){
         // zero-length passwords are not valid (or secure)
         password.text.toString().isEmpty() -> false
         confirmPassword.text.toString().isEmpty() -> false
+        password.text.toString().count() <= 5 -> false
+        // passwords entered have to match
         password.text.toString() != confirmPassword.text.toString() -> false
         else -> true
     }
 
+    // Functionality to let employee reset their password
     private fun resetPassword() {
         if (!validateCredentials()) {
-            onResetPasswordFailed("Empty password, please try again")
+            onResetPasswordFailed("Invalid password, please try again (must be more than 5 characters)")
+            this.password.text = null
+            this.confirmPassword.text = null
             return
         }
 
@@ -80,5 +83,9 @@ class ResetPasswordActivity : AppCompatActivity(){
         realmApp.emailPassword.callResetPasswordFunction(email as String, password)
 
         onResetPasswordSuccess("Password changed!")
+
+        // Go back to clock in page
+        val intent = Intent(this@ResetPasswordActivity, ClockInActivity::class.java)
+        startActivity(intent)
     }
 }

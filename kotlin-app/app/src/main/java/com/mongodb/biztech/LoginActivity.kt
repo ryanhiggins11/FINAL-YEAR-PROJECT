@@ -13,15 +13,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
-import com.mongodb.biztech.model.UserToken
+import com.mongodb.biztech.model.UserCredentials
 import io.realm.mongodb.Credentials
-import io.realm.mongodb.User
-
-
 /*
-* LoginActivity: launched whenever a user isn't already logged in. Allows a user to enter email
-* and password credentials to log in to an existing account or create a new account. User can
-* also use biometric authentication to log in.
+* LoginActivity: Launched whenever a user isn't already logged in.
+* Allows a user to enter email and password credentials to log in
+* to an existing account. User can also enable biometric authentication
+* and then use it to log in.
 */
 class LoginActivity : AppCompatActivity() {
     private lateinit var username: EditText
@@ -69,7 +67,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         if (ciphertextWrapper != null) {
-            if (UserToken.password == null) {
+            if (UserCredentials.password == null) {
                 showBiometricPromptForDecryption()
             }
         }
@@ -90,20 +88,8 @@ class LoginActivity : AppCompatActivity() {
         Toast.makeText(baseContext, errorMsg, Toast.LENGTH_LONG).show()
     }
 
-    private fun validateCredentials(): Boolean = when {
-        // zero-length usernames and passwords are not valid (or secure), so prevent users from creating accounts with those client-side.
-        username.text.toString().isEmpty() -> false
-        password.text.toString().isEmpty() -> false
-        else -> true
-    }
-
-    // handle user authentication (login) and account creation
+    // Handle user authentication (login)
     private fun login() {
-        if (!validateCredentials()) {
-            onLoginFailed("Invalid username or password")
-            return
-        }
-
         // while this operation completes, disable the button to login
         loginButton.isEnabled = false
 
@@ -116,7 +102,7 @@ class LoginActivity : AppCompatActivity() {
             // re-enable the buttons after user login returns a result
             loginButton.isEnabled = true
             if (!it.isSuccess) {
-                onLoginFailed(it.error.message ?: "An error occurred.")
+                onLoginFailed(it.error.message ?: "Incorrect email or password")
             } else {
                 val user = realmApp.currentUser()
                 val customUserData : Any? = user?.customData?.get("name")
@@ -127,7 +113,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     // BIOMETRICS SECTION
-
     @SuppressLint("CommitPrefEdits")
     private fun showBiometricPromptForDecryption() {
         ciphertextWrapper?.let { textWrapper ->
@@ -150,14 +135,14 @@ class LoginActivity : AppCompatActivity() {
             authResult.cryptoObject?.cipher?.let { it ->
                 val plaintext =
                         cryptographyManager.decryptPassword(textWrapper.ciphertext, it)
-                UserToken.password = plaintext
+                UserCredentials.password = plaintext
 
                 // Get stored username from Shared Preferences
                 val sharedPreferences: SharedPreferences = this.getSharedPreferences(sharedPrefFile,Context.MODE_PRIVATE)
                 val sharedNameValue = sharedPreferences.getString("username_key","defaultname")
 
                 // Login with stored username and decrypted password
-                realmApp.loginAsync(Credentials.emailPassword(sharedNameValue.toString(), UserToken.password)){
+                realmApp.loginAsync(Credentials.emailPassword(sharedNameValue.toString(), UserCredentials.password)){
                     if (!it.isSuccess) {
                         onLoginFailed(it.error.message ?: "Wrong email or password")
                     } else {

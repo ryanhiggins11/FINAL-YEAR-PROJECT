@@ -21,7 +21,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 
-// Since we are using the same methods in more than one Activity, better give them their own file.
+/* Display message for employee/manager when using
+ * biometric authentication to log in
+ */
 object BiometricPromptUtils {
     private const val TAG = "BiometricPromptUtils"
     fun createBiometricPrompt(

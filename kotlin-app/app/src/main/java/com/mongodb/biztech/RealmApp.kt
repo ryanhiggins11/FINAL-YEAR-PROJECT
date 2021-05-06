@@ -2,7 +2,6 @@ package com.mongodb.biztech
 
 import android.app.Application
 import android.util.Log
-
 import io.realm.Realm
 import io.realm.log.LogLevel
 import io.realm.log.RealmLog
@@ -14,11 +13,10 @@ lateinit var realmApp: App
 // global Kotlin extension that resolves to the short version
 // of the name of the current class. Used for labelling logs.
 inline fun <reified T> T.TAG(): String = T::class.java.simpleName
-const val PARTITION_EXTRA_KEY = "PARTITION"
-const val PROJECT_NAME_EXTRA_KEY = "PROJECT NAME"
 
 /*
-* RealmApp: Sets up the Realm App and enables Realm-specific logging in debug mode.
+* RealmApp: Sets up the Realm App and enables Realm-specific
+* logging in debug mode.
 */
 class RealmApp : Application() {
 
