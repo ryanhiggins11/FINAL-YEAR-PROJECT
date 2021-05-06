@@ -30,8 +30,31 @@ Assuming you have the repository already cloned to your machine you will need to
 
 Once you have these commands running and the server and websites are running navigate to the URL http://localhost:3000/ in your browser. You should now see the running website.
 
+# RUNNING THE APPLICATION
+
+• Git clone this repository
+
+• Open Android Studio and select open an existing project. Search for the folder created when cloning our repository and select it. Wait for Android Studio to finish building the gradle files.
+
+• To sign in as an employee, use the following credentials to sign in
+  
+  -> Email: example@biztech.com 
+  
+  -> Password: example123
+
+• To sign in as a manager, use the following credentials to sign in: 
+    
+  -> Email: admin@biztech.com 
+  
+  -> Password: admin123
+
 # ACCESSING THE SITE
 The website for our project can be accessed at https://biztech-management.herokuapp.com/. Unfortunately if your email is not added to our website as being allowed to view it you will not be able to see anything on the site. This is due to the security features we have added to the site in order to keep any sensitive employee information safe from being viewed bby anyone other than authorized accounts or management. The best way to see the site in action would be by looking at our screencast of our project which will be linked below.
 
 # OUR REPOSITORY
 Inside the repository there are a number of different folders. In this section we will break down what is contained in the repository and where different things can be found and give a simple breakdown. The main folders which are of interest are "Dissertation" , "ManagerWebsite" and "kotlin-app". Inside the dissertation folder there is our dissertation.pdf. This is the complete writeup and dissertation from our team regarding the project. Inside the "ManagerWebsite" folder we have the all files which are used for the website side of things for our project. Lastly inside the "kotlin-app" folder there is the files for our phone application which was developed in android studio. This folder contains all the source code for the phone application.
+
+# USEFUL LINKS
+Download android studio - https://developer.android.com/studio
+
+Running the emulator - https://developer.android.com/studio/run/emulator
