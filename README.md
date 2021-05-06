@@ -16,16 +16,19 @@ Exploring these files will allow you to see all of the source code of our projec
 
 # RUNNING THE WEBSITE
 Assuming you have the repository already cloned to your machine you will need to move into the "ManagerWebsite" folder. Next you will need to run some commands via the command line interface. 
-### Commands inside "ManagerWebsite folder"
+#### Commands inside "ManagerWebsite folder"
 • "npm install" - Installs necessary packages.
 
 • "npm start" - This will start the website.
 
 • "cd client" should be done once the other commands are run. This will bring you into the client folder where we run the next commands.
-### Commands inside "client folder"
+#### Commands inside "client folder"
 
 • "npm install" - Installs necessary packages.
 
 • "npm start server" - This will start the server needed for the website data.
 
 Once you have these commands running and the server and websites are running navigate to the URL http://localhost:3000/ in your browser. You should now see the running website.
+
+# ACCESSING THE SITE
+The website for our project can be accessed at https://biztech-management.herokuapp.com/. Unfortunately if your email is not added to our website as being allowed to view it you will not be able to see anything on the site. This is due to the security features we have added to the site in order to keep any sensitive employee information safe from being viewed bby anyone other than authorized accounts or management. The best way to see the site in action would be by looking at our screencast of our project which will be linked below.
