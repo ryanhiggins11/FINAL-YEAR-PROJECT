@@ -1,6 +1,8 @@
 const ClockOutTime = require('../models/ClockOutTimes');
 
-// Defining all methods and business logic for routes
+/*
+* Defining all methods and business logic for routes
+*/
 
 module.exports = {
 	findAll: function(req, res) {

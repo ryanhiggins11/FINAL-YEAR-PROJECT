@@ -1,7 +1,8 @@
 const ClockInTime = require('../models/ClockInTimes');
 
-// Defining all methods and business logic for routes
-
+/*
+* Defining all methods and business logic for routes
+*/
 module.exports = {
 	findAll: function(req, res) {
 		ClockInTime.find(req.query)

@@ -1,13 +1,9 @@
 const router = require('express').Router();
-// const bookRoutes = require('./books');
+
 const clockInTimesRoutes = require('./clockInTimes');
 const clockOutTimesRoutes = require('./clockOutTimes');
 const userRoutes = require('./user');
 const path = require('path');
-
-// API routes
-//router.use('/api/books', bookRoutes);
-
 router.use('/api/ClockInTimes', clockInTimesRoutes);
 router.use('/api/ClockOutTimes', clockOutTimesRoutes);
 router.use('/api/User', userRoutes);

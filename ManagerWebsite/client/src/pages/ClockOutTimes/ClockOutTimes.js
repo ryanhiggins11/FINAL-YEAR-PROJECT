@@ -10,27 +10,32 @@ import { Input, FormBtn } from '../../components/Form';
 
 
 class ClockOutTimes extends React.Component {
+	//state with 3 javascript objects delcared
 	state = {
 		clockOutTimes: [],
 		name: '',
 		clockedOutTime: ''
 	};
 
+	//loads clock out times
 	componentDidMount() {
 		this.loadClockOutTimes();
 	}
 
+	//gets clock out times
 	loadClockOutTimes = () => {
 		API.getClockOutTimes()
 			.then(res => this.setState({ clockOutTimes: res.data, name: '', clockedOutTime: '' }))
 			.catch(err => console.log(err));
 	};
 
+	//deletes clock out times
 	deleteClockOutTime = id => {
 		API.deleteClockOutTime(id)
 			.then(res => this.loadClockOutTimes())
 			.catch(err => console.log(err));
 	};
+
 
 	handleInputChange = event => {
 		const { name, value } = event.target;
@@ -39,6 +44,13 @@ class ClockOutTimes extends React.Component {
 		});
 	};
 
+	 /*
+	 *renders image
+	 *displays clock out times
+	 *gets clock out times
+	 *delete button if you want to remove a clock out time
+	 *two buttons to bring to clock in times and employee details page
+	 */
 	render() {
 		return (
 			<Container fluid>

@@ -10,7 +10,7 @@ import { Input, FormBtn } from '../../components/Form';
 
 
 class User extends Component {
-
+	//state with 3 javascript objects delcared
 	state = {
 		User: [],
 		name: '',
@@ -20,16 +20,19 @@ class User extends Component {
 		emergencyContact:''
 	};
 
+	//loads users
 	componentDidMount() {
 		this.loadUsers();
 	}
 
+	//gets users from database
 	loadUsers = () => {
 		API.getUsers()
 			.then(res => this.setState({ User: res.data, name: '', firstName: '', secondName: '', dateOfBirth: '', emergencyContact: ''}))
 			.catch(err => console.log(err));
 	};
 
+	//deletes users
 	deleteUser = id => {
 		API.deleteUser(id)
 			.then(res => this.loadUsers())
@@ -43,7 +46,13 @@ class User extends Component {
 		});
 	};
 
-	
+	/*
+	*Loads in employees
+	*Gets employees Email, First Name, Surname, DOB and Emergency Contact Number
+	*Delete button
+	*displays these all in a table
+	*two buttons to bring back to clockin times and clockout times
+	*/
 	render() {
 		console.log(this.state.User)
 		return (
@@ -57,7 +66,7 @@ class User extends Component {
 												<tr>
 												<td><th>Employee Email: {User.name}</th></td>
 												<td><th>First Name: {User.firstName}</th></td>
-												<td><th>Surname: {User.firstName}</th></td>
+												<td><th>Surname: {User.secondName}</th></td>
 												<td><th>DOB: {User.dateOfBirth}</th></td>
 												<td><th>Emergency Contact Number: {User.emergencyContact}</th></td>
 												<td><DeleteBtn onClick={() => this.deleteUser(User._id)} /></td>
