@@ -15,12 +15,10 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
-import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
-import com.mongodb.biztech.model.clockintimes
 import io.realm.Realm
 import io.realm.mongodb.User
 import io.realm.mongodb.mongo.options.UpdateOptions
@@ -33,7 +31,10 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 /*
-* ClockInActivity: allows an employee to clock in and reset their password
+* ClockInActivity: Allow an employee to clock in and
+* reset their password. The time that the employee
+* clocked in to work at is pushed to mongodb for the
+* manager to view
 */
 class ClockInActivity : AppCompatActivity() {
     private var clockInRealm: Realm? = null
@@ -52,7 +53,7 @@ class ClockInActivity : AppCompatActivity() {
         }
         // For manager
         else if(user?.customData?.get("name") == "admin@biztech.com"){
-            // if user is manager, start the add employee activity
+            // if user is manager, start the manager activity
             startActivity(Intent(this, ManagerActivity::class.java))
         }
         // For employees
@@ -93,7 +94,6 @@ class ClockInActivity : AppCompatActivity() {
         setContentView(R.layout.activity_clock_in)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
         locationRequest = LocationRequest.create();
         // The priority of the request
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY;
@@ -103,8 +103,6 @@ class ClockInActivity : AppCompatActivity() {
         val clockInButton = findViewById<Button>(R.id.button_clockin)
         // Button will be enabled after app checks if employee is already clocked in
         clockInButton.isEnabled = false
-
-        // Allow employee to clock in
         clockInButton.setOnClickListener {
             clockIn()
 
@@ -113,8 +111,6 @@ class ClockInActivity : AppCompatActivity() {
         }
 
         val resetPasswordButton = findViewById<Button>(R.id.button_password_reset)
-
-        // Allow employee to reset password
         resetPasswordButton.setOnClickListener{
             val intent = Intent(this@ClockInActivity, ResetPasswordActivity::class.java)
             startActivity(intent)
@@ -152,7 +148,8 @@ class ClockInActivity : AppCompatActivity() {
         }
     }
 
-    // Input clock in time and updates clocked in status when employee clocks in
+    // Push clock in to mongodb when employee clocks in,
+    // and update isclockedin to true
     @RequiresApi(Build.VERSION_CODES.O)
     private fun clockIn(){
         // Get current time

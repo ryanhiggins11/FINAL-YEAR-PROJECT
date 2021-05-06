@@ -1,5 +1,5 @@
 package com.mongodb.biztech.model
 
-object UserToken {
+object UserCredentials {
     var password: String? = null
 }

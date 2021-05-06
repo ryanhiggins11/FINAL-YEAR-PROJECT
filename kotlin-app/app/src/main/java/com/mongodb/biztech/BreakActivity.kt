@@ -9,17 +9,17 @@ import android.view.MenuItem
 import android.widget.Button
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.mongodb.biztech.model.breakfinishtime
-import com.mongodb.biztech.model.breakstarttime
 import io.realm.Realm
 import io.realm.mongodb.User
+import io.realm.mongodb.mongo.options.UpdateOptions
 import io.realm.mongodb.sync.SyncConfiguration
+import org.bson.Document
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
-
 /*
-* BreakActivity: allows an employee to start and finish their break
+* BreakActivity: Allow an employee to go on break, which the manager
+* can view on the website
 */
 class BreakActivity : AppCompatActivity() {
     private var breakRealm: Realm? = null
@@ -51,38 +51,16 @@ class BreakActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_break)
 
-        user = realmApp.currentUser()
-
         val breakStartButton = findViewById<Button>(R.id.button_toStartBreak)
-
         breakStartButton.setOnClickListener{
-            // Returns current time to breakstarttime collection
-            val currentBreakStartTime = LocalTime.now()
-            val employee = breakstarttime(currentBreakStartTime.format
-                                (DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)))
-
-            // All realm writes need to occur inside of a transaction
-            breakRealm?.executeTransactionAsync { realm ->
-                realm.insert(employee)
-            }
-
+            startBreak()
             // Disable start break button
             breakStartButton.isEnabled = false
         }
 
         val breakFinishButton = findViewById<Button>(R.id.button_toGoBackToWork)
-
         breakFinishButton.setOnClickListener{
-            // Returns current time to breakfinishtime collection
-            val currentBreakFinishTime = LocalTime.now()
-            val employee = breakfinishtime(currentBreakFinishTime.format
-                                (DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)))
-
-            // All realm writes need to occur inside of a transaction
-            breakRealm?.executeTransactionAsync { realm ->
-                realm.insert(employee)
-            }
-
+            finishBreak()
             // Go back to ClockOutActivity
             val intent = Intent(this@BreakActivity, ClockOutActivity::class.java)
             startActivity(intent)
@@ -116,6 +94,80 @@ class BreakActivity : AppCompatActivity() {
             }
             else -> {
                 super.onOptionsItemSelected(item)
+            }
+        }
+    }
+
+    // Push break start time to mongodb when employee starts their break
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun startBreak(){
+        // Get current time
+        val currentTime = LocalTime.now()
+
+        // Find breakstarttime collection on mongodb
+        val user = realmApp.currentUser()
+        val mongoClient =
+                user!!.getMongoClient("mongodb-atlas") // service for MongoDB Atlas cluster containing custom user data
+        val mongoDatabase =
+                mongoClient.getDatabase("tracker")
+        val mongoCollection =
+                mongoDatabase.getCollection("breakstarttime")
+
+        // Find document in collection with user's ID
+        val query = Document("_partition", "user="+user.id)
+        // Update document with the current time
+        val update = Document("_partition", "user="+user.id).append("breakStartTime", currentTime.format
+        (DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)))
+                .append("name", user?.customData?.get("name"))
+        // Allow upsert (if document not found, create one)
+        val updateOptions = UpdateOptions().upsert(true)
+        // Update/upsert document
+        mongoCollection?.updateOne(query, update, updateOptions)?.getAsync { task ->
+            if (task.isSuccess) {
+                if(task.get().upsertedId != null){
+                    Log.v("EXAMPLE", "upserted document")
+                } else {
+                    Log.v("EXAMPLE", "updated document")
+                }
+            } else {
+                Log.e("EXAMPLE", "failed to update document with: ${task.error}")
+            }
+        }
+    }
+
+    // Push break finish time to mongodb when employee starts their break
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun finishBreak(){
+        // Get current time
+        val currentTime = LocalTime.now()
+
+        // Find breakfinishtime collection on mongodb
+        val user = realmApp.currentUser()
+        val mongoClient =
+                user!!.getMongoClient("mongodb-atlas") // service for MongoDB Atlas cluster containing custom user data
+        val mongoDatabase =
+                mongoClient.getDatabase("tracker")
+        val mongoCollection =
+                mongoDatabase.getCollection("breakfinishtime")
+
+        // Find document in collection with user's ID
+        val query = Document("_partition", "user="+user.id)
+        // Update document with the current time
+        val update = Document("_partition", "user="+user.id).append("breakFinishTime", currentTime.format
+        (DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)))
+                .append("name", user?.customData?.get("name"))
+        // Allow upsert (if document not found, create one)
+        val updateOptions = UpdateOptions().upsert(true)
+        // Update/upsert document
+        mongoCollection?.updateOne(query, update, updateOptions)?.getAsync { task ->
+            if (task.isSuccess) {
+                if(task.get().upsertedId != null){
+                    Log.v("EXAMPLE", "upserted document")
+                } else {
+                    Log.v("EXAMPLE", "updated document")
+                }
+            } else {
+                Log.e("EXAMPLE", "failed to update document with: ${task.error}")
             }
         }
     }

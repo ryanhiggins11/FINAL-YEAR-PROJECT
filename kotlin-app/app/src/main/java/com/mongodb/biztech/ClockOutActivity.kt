@@ -9,7 +9,6 @@ import android.view.MenuItem
 import android.widget.Button
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.mongodb.biztech.model.clockouttimes
 import io.realm.Realm
 import io.realm.mongodb.User
 import io.realm.mongodb.mongo.options.UpdateOptions
@@ -20,7 +19,9 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 /*
-* ClockOutActivity: allows an employee to clock out
+* ClockOutActivity: Allow an employee to clock out of work and
+* go on break. The time that the employee clocked out at is pushed
+* to mongodb for the manager to view.
 */
 class ClockOutActivity : AppCompatActivity() {
     private var clockOutRealm: Realm? = null
@@ -53,8 +54,6 @@ class ClockOutActivity : AppCompatActivity() {
         setContentView(R.layout.activity_clock_out)
 
         val clockOutButton = findViewById<Button>(R.id.button_clockout)
-
-        // allow employee to clock out
         clockOutButton.setOnClickListener {
             clockOut()
             val intent = Intent(this@ClockOutActivity, ClockInActivity::class.java)
@@ -62,7 +61,6 @@ class ClockOutActivity : AppCompatActivity() {
         }
 
         val breakButton = findViewById<Button>(R.id.button_toBreak)
-
         breakButton.setOnClickListener{
             val intent = Intent(this@ClockOutActivity, BreakActivity::class.java)
             startActivity(intent)
@@ -100,7 +98,8 @@ class ClockOutActivity : AppCompatActivity() {
         }
     }
 
-    // Input clock out time when employee clocks out
+    // Push clock out time to mongodb when employee clocks out,
+    // and update isclockedin to false
     @RequiresApi(Build.VERSION_CODES.O)
     private fun clockOut(){
         // Get current time

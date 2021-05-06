@@ -27,9 +27,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
-import com.mongodb.biztech.model.UserToken
+import com.mongodb.biztech.model.UserCredentials
 import io.realm.mongodb.Credentials
 
+/*
+ * EnableBiometricLoginActivity: Manager and employee can
+ * set up biometric authentication here. The activity takes their
+ * password and then encrypts and stores it.
+ */
 class EnableBiometricLoginActivity : AppCompatActivity() {
     private val TAG = "EnableBiometricLogin"
     private lateinit var cryptographyManager: CryptographyManager
@@ -104,7 +109,7 @@ class EnableBiometricLoginActivity : AppCompatActivity() {
                 editor.commit()
 
                 // store and encrypt users password
-                UserToken.password = password
+                UserCredentials.password = password
                 showBiometricPromptForEncryption()
             }
         }
@@ -126,7 +131,7 @@ class EnableBiometricLoginActivity : AppCompatActivity() {
 
     private fun encryptAndStorePassword(authResult: BiometricPrompt.AuthenticationResult) {
         authResult.cryptoObject?.cipher?.apply {
-            UserToken.password?.let { token ->
+            UserCredentials.password?.let { token ->
                 Log.d(TAG, "The token from server is $token")
                 val encryptedServerTokenWrapper = cryptographyManager.encryptPassword(token, this)
                 cryptographyManager.persistCiphertextWrapperToSharedPrefs(
