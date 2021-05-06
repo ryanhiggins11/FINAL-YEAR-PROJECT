@@ -12,7 +12,7 @@ The manager website was created using react, mern, node, and mongoDB express.  W
 # EXPLORE THE CODE
 Firstly you will need to clone this repository to your local machine. This can be done by clicking the link in the top of the repository , entering a folder you would like to clone it to and going into the command line. Then using the command "git clone (Repository Link)". This will clone all files onto your machine.
 
-Exploring these files will allow you to see all of the source code of our project. Next you should open android studio and choose to open an existing project. Here you should choose the project folder you have cloned and this will load the project in android studio. Now inside your android studio our source code and different files will be loacted on the right hand side of the screen and can be accessed an examined easily.
+Exploring these files will allow you to see all of the source code of our project. Next you should open android studio and choose to open an existing project. Here you should choose the project folder you have cloned and this will load the project in android studio. Now inside your android studio our source code and different files will be loacted on the left hand side of the screen and can be accessed an examined easily.
 
 # RUNNING THE WEBSITE
 Assuming you have the repository already cloned to your machine you will need to move into the "ManagerWebsite" folder. Next you will need to run some commands via the command line interface. 
