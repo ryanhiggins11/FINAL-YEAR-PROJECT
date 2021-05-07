@@ -88,8 +88,19 @@ class LoginActivity : AppCompatActivity() {
         Toast.makeText(baseContext, errorMsg, Toast.LENGTH_LONG).show()
     }
 
+    private fun validateCredentials(): Boolean = when {
+        // zero-length username and passwords are not valid
+        username.text.toString().isEmpty() -> false
+        password.text.toString().isEmpty() -> false
+        else -> true
+    }
+
     // Handle user authentication (login)
     private fun login() {
+        if (!validateCredentials()) {
+            onLoginFailed("Invalid login credentials, please try again")
+            return
+        }
         // while this operation completes, disable the button to login
         loginButton.isEnabled = false
 
@@ -102,7 +113,7 @@ class LoginActivity : AppCompatActivity() {
             // re-enable the buttons after user login returns a result
             loginButton.isEnabled = true
             if (!it.isSuccess) {
-                onLoginFailed(it.error.message ?: "Incorrect email or password")
+                onLoginFailed(it.error.message ?: "Incorrect email or password, please try again")
             } else {
                 val user = realmApp.currentUser()
                 val customUserData : Any? = user?.customData?.get("name")

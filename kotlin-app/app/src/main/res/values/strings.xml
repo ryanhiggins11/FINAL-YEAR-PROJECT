@@ -7,7 +7,7 @@
     <string name="logout">Log Out</string>
     <string name="getstarted">Get Started</string>
     <string name="clockIn">Clock In</string>
-    <string name="toBreak">Break</string>
+    <string name="toBreak">Go on Break</string>
     <string name="clockOut">Clock Out</string>
     <string name="welcome">Welcome!</string>
     <string name="addEmployee">Add Employee</string>
@@ -43,4 +43,10 @@
     <string name="secret_key_name">biometric_sample_encryption_key</string>
     <string name="removeEmployee">Remove</string>
     <string name="removeEmployeeTitle">Remove Employee</string>
+    <string name="welcome_to_biztech">Welcome to Biztech</string>
+    <string name="starting_a_shift">Starting a shift?</string>
+    <string name="clock_station">Clock Station</string>
+    <string name="edit_employees">Edit Employees Details</string>
+    <string name="add_employees">Add an Employee</string>
+    <string name="confirm_password">Re-enter Password</string>
 </resources>

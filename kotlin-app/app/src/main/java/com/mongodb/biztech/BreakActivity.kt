@@ -52,13 +52,15 @@ class BreakActivity : AppCompatActivity() {
         setContentView(R.layout.activity_break)
 
         val breakStartButton = findViewById<Button>(R.id.button_toStartBreak)
+        val breakFinishButton = findViewById<Button>(R.id.button_toGoBackToWork)
+        breakFinishButton.isEnabled = false
         breakStartButton.setOnClickListener{
             startBreak()
             // Disable start break button
             breakStartButton.isEnabled = false
+            breakFinishButton.isEnabled = true
         }
 
-        val breakFinishButton = findViewById<Button>(R.id.button_toGoBackToWork)
         breakFinishButton.setOnClickListener{
             finishBreak()
             // Go back to ClockOutActivity
