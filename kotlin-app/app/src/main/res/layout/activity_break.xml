@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".BreakActivity">
 
-    <!-- Break Page -->
+    <!-- Break Page where employees can start and
+            finish their break-->
 
     <TextView
         android:id="@+id/clockStationTitle"
@@ -17,81 +18,52 @@
         android:layout_marginEnd="73dp"
         android:layout_marginBottom="20dp"
         android:text="@string/break_station_title"
-        android:textColor="@color/black"
-        android:textSize="45dp"
+        android:textColor="@color/blackOlive"
+        android:textSize="40sp"
         app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.517"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/startBreak"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="32dp"
-        android:text="@string/press_the_button_to_go_on_break"
-        android:textColor="@color/black"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-    <TextView
-        android:id="@+id/breakInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="58dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="21dp"
-        android:text="@string/press_the_button_to_go_back_to_work"
-        android:textColor="@color/black"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/button_toGoBackToWork"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_toStartBreak" />
-
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="198dp"
-        android:layout_height="173dp"
+        android:layout_width="287dp"
+        android:layout_height="236dp"
         android:layout_marginStart="75dp"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="44dp"
         android:layout_marginEnd="76dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintHorizontal_bias="0.481"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/clockStationTitle"
         app:srcCompat="@drawable/lunch" />
 
     <Button
         android:id="@+id/button_toStartBreak"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
+        android:layout_width="153dp"
+        android:layout_height="58dp"
         android:layout_marginStart="136dp"
-        android:layout_marginTop="24dp"
         android:layout_marginEnd="137dp"
+        android:layout_marginBottom="176dp"
+        android:background="@color/lightBlue"
         android:text="@string/toStartBreak"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/startBreak" />
+        app:layout_constraintHorizontal_bias="0.479"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button_toGoBackToWork"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
+        android:layout_width="153dp"
+        android:layout_height="58dp"
         android:layout_marginStart="136dp"
-        android:layout_marginTop="1dp"
         android:layout_marginEnd="137dp"
-        android:layout_marginBottom="83dp"
+        android:layout_marginBottom="56dp"
+        android:background="@color/lightBlue"
         android:text="@string/toGoBackToWork"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/breakInfo" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

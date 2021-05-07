@@ -55,7 +55,8 @@ class EnableBiometricLoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun onLoginSuccess() {
+    private fun onLoginSuccess(successMsg: String) {
+        Toast.makeText(baseContext, successMsg, Toast.LENGTH_LONG).show()
         val intent = Intent(this@EnableBiometricLoginActivity, ClockInActivity::class.java)
         startActivity(intent)
     }
@@ -72,11 +73,11 @@ class EnableBiometricLoginActivity : AppCompatActivity() {
         else -> true
     }
 
-    // handle user authentication (login) and account creation
+    // Functionality to ensure credentials entered in are correct
     @SuppressLint("CommitPrefEdits")
     private fun login() {
         if (!validateCredentials()) {
-            onLoginFailed("Invalid username or password")
+            onLoginFailed("Invalid credentials, please try again")
             return
         }
 
@@ -95,12 +96,11 @@ class EnableBiometricLoginActivity : AppCompatActivity() {
             // re-enable the buttons after user login returns a result
             authorizeButton.isEnabled = true
             if (!it.isSuccess) {
-                onLoginFailed(it.error.message ?: "An error occurred.")
+                onLoginFailed(it.error.message ?: "Incorrect email or password, please try again")
             } else {
                 val user = realmApp.currentUser()
                 val customUserData : Any? = user?.customData?.get("name")
                 Log.i("EXAMPLE", "Fetched custom user data: $customUserData")
-                // Do toast message here for user
 
                 // store username
                 val editor:SharedPreferences.Editor =  sharedPreferences.edit()
@@ -143,6 +143,6 @@ class EnableBiometricLoginActivity : AppCompatActivity() {
                 )
             }
         }
-        onLoginSuccess()
+        onLoginSuccess("Successfully enabled biometric authentication!")
     }
 }

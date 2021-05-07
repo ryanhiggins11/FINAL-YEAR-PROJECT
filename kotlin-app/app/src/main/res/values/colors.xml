@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#a9a9a9</color>
+    <!-- Task bar colour -->
+    <color name="colorPrimary">#bfd7ea</color>
     <color name="colorPrimaryDark">#808080</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="black">#000000</color>
+    <color name="magnolia">#ECE5F0</color>
+    <color name="cultured">#F1F1F1</color>
+    <color name="sonicSilver">#767676</color>
+    <color name="blackOlive">#3A3E3B</color>
+    <color name="mountbattenPink">#9E829C</color>
+    <color name="lightGreen">#839788</color>
+    <color name="lightBlue">#bfd7ea</color>
 </resources>

@@ -12,7 +12,6 @@ import io.realm.mongodb.mongo.options.UpdateOptions
 import org.bson.Document
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
-
 /*
 * AddEmployeeActivity: Allow manager to add add
 * employees to the app
@@ -61,7 +60,7 @@ class AddEmployeeActivity : AppCompatActivity() {
     // Functionality to add employees to the app
     private fun registerEmployee() {
         if (!validateCredentials()) {
-            onRegisterEmployeeFailed("Invalid username or password")
+            onRegisterEmployeeFailed("Invalid credentials, please try again")
             return
         }
 
@@ -76,7 +75,7 @@ class AddEmployeeActivity : AppCompatActivity() {
             // Re-enable create employee button
             createEmployeeButton.isEnabled = true
             if (!it.isSuccess) {
-                onRegisterEmployeeFailed("Could not register employee.")
+                onRegisterEmployeeFailed("Could not register employee, please try again")
                 Log.e(TAG(), "Error: ${it.error}")
             } else {
                 onRegisterEmployeeSuccess("Employee added to app!")

@@ -9,18 +9,37 @@
     <!-- Add Employee Page to allow manager
           to add an employee to the app -->
 
+    <TextView
+        android:id="@+id/AddTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="65dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="65dp"
+        android:layout_marginBottom="90dp"
+        android:text="@string/add_employees"
+        android:textColor="@color/blackOlive"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="471dp"
-        android:layout_height="510dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="18dp"
+        android:layout_marginBottom="136dp"
         android:orientation="vertical"
         android:paddingLeft="24dp"
         android:paddingTop="12dp"
         android:paddingRight="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.947"
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.textfield.TextInputLayout
@@ -56,9 +75,11 @@
             android:id="@+id/button_create"
             android:layout_width="321dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:layout_marginBottom="24dp"
+            android:background="@color/lightBlue"
             android:padding="12dp"
-            android:text="@string/editEmployee" />
+            android:text="@string/addEmployee" />
 
     </LinearLayout>
 
@@ -66,6 +87,7 @@
         android:id="@+id/imageView2"
         android:layout_width="425dp"
         android:layout_height="300dp"
+        android:layout_marginTop="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
