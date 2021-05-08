@@ -81,6 +81,8 @@ class User extends Component {
 					
 					<a href="clockOutTimes"><button>Clock-Out Times</button></a>
 					<a href="clockInTimes"><button>Clock-In Times</button></a>
+					<a href="breakStartTimes"><button>Break Start Times</button></a>
+					<a href="breakFinishTimes"><button>Break Finish Times</button></a>
 				
 				
 			</Container>
