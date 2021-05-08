@@ -88,8 +88,7 @@ class ClockInTimes extends React.Component {
 							<h3>No Results Times To Display</h3>
 						)}
 						<a href="clockOutTimes"><button>Clock-Out Times</button></a>
-						<a href="breakStartTimes"><button>Break Start Times</button></a>
-						<a href="breakFinishTimes"><button>Break Finish Times</button></a>
+						<a href="breakTimes"><button>Break Times</button></a>
 						<a href="user"><button>Employee Details</button></a>
 					</Col>
 				</Row>

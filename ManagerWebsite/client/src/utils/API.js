@@ -17,57 +17,40 @@ export default {
 	saveClockInTime: function(clockInTimeData) {
 		return axios.post('/api/ClockInTimes', clockInTimeData);
 	},
-	// Gets all clock in times
+	// Gets all clock out times
 	getClockOutTimes: function() {
 		return axios.get('/api/ClockOutTimes');
 	},
-	// Gets the clock in time with the given id
+	// Gets the clock out time with the given id
 	getClockOutTime: function(id) {
 		return axios.get('/api/ClockOutTimes/' + id);
 	},
-	// Deletes the clock in time with the given id
+	// Deletes the clock out time with the given id
 	deleteClockOutTime: function(id) {
 		return axios.delete('/api/ClockOutTimes/' + id);
 	},
-	// Saves a clock in time to the database (don't need)
+	// Saves a clock out time to the database (don't need)
 	saveClockOutTime: function(clockOutTimeData) {
 		return axios.post('/api/ClockOutTimes', clockOutTimeData);
 	},
-	// Gets all clock in times
-	getBreakStartTimes: function() {
-		return axios.get('/api/BreakStartTimes');
+	// Gets all break times
+	getBreakTimes: function() {
+		return axios.get('/api/BreakTimes');
 	},
-	// Gets the clock in time with the given id
-	getBreakStartTime: function(id) {
-		return axios.get('/api/BreakStartTimes/' + id);
+	// Gets the break time with the given id
+	getBreakTime: function(id) {
+		return axios.get('/api/BreakTimes/' + id);
 	},
-	// Deletes the clock in time with the given id
-	deleteBreakStartTime: function(id) {
-		return axios.delete('/api/BreakStartTimes/' + id);
+	// Deletes the break time with the given id
+	deleteBreakTime: function(id) {
+		return axios.delete('/api/BreakTimes/' + id);
 	},
-	// Saves a clock in time to the database (don't need)
-	saveBreakStartTime: function(breakStartTimeData) {
-		return axios.post('/api/BreakStartTimes', breakStartTimeData);
-	},
-	// Gets all clock in times
-	getBreakFinishTimes: function() {
-		return axios.get('/api/BreakFinishTimes');
-	},
-	// Gets the clock in time with the given id
-	getBreakFinishTime: function(id) {
-		return axios.get('/api/BreakFinishTimes/' + id);
-	},
-	// Deletes the clock in time with the given id
-	deleteBreakFinishTime: function(id) {
-		return axios.delete('/api/BreakFinishTimes/' + id);
-	},
-		// Saves a clock in time to the database (don't need)
-	saveBreakFinishTime: function(breakFinishTimeData) {
-		return axios.post('/api/BreakFinishTimes', breakFinishTimeData);
+	// Saves a break time to the database (don't need)
+	saveBreakTime: function(breakTimeData) {
+		return axios.post('/api/BreakTimes', breakTimeData);
 	},
 	
 	
-
 	// Gets all users
 	getUsers: function() {
 		return axios.get('/api/User');
