@@ -9,30 +9,30 @@ import { Input, FormBtn } from '../../components/Form';
 
 
 
-class ClockOutTimes extends React.Component {
+class IsSick extends React.Component {
 	//state with 3 javascript objects delcared
 	state = {
-		clockOutTimes: [],
+		isSick: [],
 		name: '',
-		clockedOutTime: ''
+		isEmployeeSick: ''
 	};
 
 	//loads clock out times
 	componentDidMount() {
-		this.loadClockOutTimes();
+		this.loadIsSicks();
 	}
 
 	//gets clock out times
-	loadClockOutTimes = () => {
-		API.getClockOutTimes()
-			.then(res => this.setState({ clockOutTimes: res.data, name: '', clockedOutTime: '' }))
+	loadIsSicks = () => {
+		API.getIsSicks()
+			.then(res => this.setState({ isSick: res.data, name: '', isEmployeeSick: '' }))
 			.catch(err => console.log(err));
 	};
 
 	//deletes clock out times
-	deleteClockOutTime = id => {
-		API.deleteClockOutTime(id)
-			.then(res => this.loadClockOutTimes())
+	deleteIsSick = id => {
+		API.deleteIsSick(id)
+			.then(res => this.loadIsSicks())
 			.catch(err => console.log(err));
 	};
 
@@ -64,16 +64,16 @@ class ClockOutTimes extends React.Component {
             			</header>
 					</div>
 
-					<div classname="clock-out"><h1>Employees Clock-Out Times:</h1></div>
-						{this.state.clockOutTimes.length ? (
+					<div classname="clock-out"><h1>Sick Employees List:</h1></div>
+						{this.state.isSick.length ? (
 							<List>
 								
-								{this.state.clockOutTimes.map(clockOutTimes => (
-									<ListItem key={clockOutTimes._id}>
-										<Link to={'/clockOutTimes/' + clockOutTimes._id}>
+								{this.state.isSick.map(isSickEmployee => (
+									<ListItem key={isSickEmployee._id}>
+										<Link to={'/isSick/' + isSickEmployee._id}>
 											<table>
-												<td>{clockOutTimes.name} Clocked out at {clockOutTimes.clockedOutTime}</td>
-												<td><DeleteBtn onClick={() => this.deleteClockOutTime(clockOutTimes._id)} /></td>
+												<td>{isSickEmployee.name} Clocked out at {isSickEmployee.isEmployeeSick}</td>
+												<td><DeleteBtn onClick={() => this.deleteisSick(isSickEmployee._id)} /></td>
 											</table>
 										</Link>
 									</ListItem>
@@ -83,8 +83,8 @@ class ClockOutTimes extends React.Component {
 							<h3>No Results Times To Display</h3>
 						)}
 						<a href="clockInTimes"><button>Clock-In Times</button></a>
+                        <a href="clockOutTimes"><button>Clock-Out Times</button></a>
 						<a href="breakTimes"><button>Break Times</button></a>
-						<a href="isSick"><button>Employee Sick List</button></a>
 						<a href="user"><button>Employee Details</button></a>
 					</Col>
 				</Row>
@@ -94,4 +94,4 @@ class ClockOutTimes extends React.Component {
 	}
 }
 
-export default ClockOutTimes;
+export default IsSick;

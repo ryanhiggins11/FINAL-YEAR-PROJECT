@@ -89,6 +89,7 @@ class ClockInTimes extends React.Component {
 						)}
 						<a href="clockOutTimes"><button>Clock-Out Times</button></a>
 						<a href="breakTimes"><button>Break Times</button></a>
+						<a href="isSick"><button>Employee Sick List</button></a>
 						<a href="user"><button>Employee Details</button></a>
 					</Col>
 				</Row>
