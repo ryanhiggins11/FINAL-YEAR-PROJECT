@@ -9,30 +9,30 @@ import { Input, FormBtn } from '../../components/Form';
 
 
 
-class ClockOutTimes extends React.Component {
+class BreakStartTimes extends React.Component {
 	//state with 3 javascript objects delcared
 	state = {
-		clockOutTimes: [],
+		breakStartTimes: [],
 		name: '',
-		clockedOutTime: ''
+		breakStartedTime: ''
 	};
 
 	//loads clock out times
 	componentDidMount() {
-		this.loadClockOutTimes();
+		this.loadBreakStartTimes();
 	}
 
 	//gets clock out times
-	loadClockOutTimes = () => {
-		API.getClockOutTimes()
-			.then(res => this.setState({ clockOutTimes: res.data, name: '', clockedOutTime: '' }))
+	loadBreakStartTimes = () => {
+		API.getBreakStartTimes()
+			.then(res => this.setState({ breakStartTimes: res.data, name: '', breakStartedTime: '' }))
 			.catch(err => console.log(err));
 	};
 
 	//deletes clock out times
-	deleteClockOutTime = id => {
-		API.deleteClockOutTime(id)
-			.then(res => this.loadClockOutTimes())
+	deleteBreakStartTime = id => {
+		API.deleteBreakStartTime(id)
+			.then(res => this.loadBreakStartTimes())
 			.catch(err => console.log(err));
 	};
 
@@ -64,26 +64,27 @@ class ClockOutTimes extends React.Component {
             			</header>
 					</div>
 
-					<div classname="clock-out"><h1>Employees Clock-Out Times:</h1></div>
-						{this.state.clockOutTimes.length ? (
+					<div classname="break-start"><h1>Employees Break Start Times</h1></div>
+						{this.state.breakStartTimes.length ? (
 							<List>
 								
-								{this.state.clockOutTimes.map(clockOutTimes => (
-									<ListItem key={clockOutTimes._id}>
-										<Link to={'/clockOutTimes/' + clockOutTimes._id}>
+								{this.state.breakStartTimes.map(breakStartTime => (
+									<ListItem key={breakStartTime._id}>
+										<Link to={'/breakStartTimes/' + breakStartTime._id}>
 											<table>
-												<td>{clockOutTimes.name} Clocked out at {clockOutTimes.clockedOutTime}</td>
-												<td><DeleteBtn onClick={() => this.deleteClockOutTime(clockOutTimes._id)} /></td>
+												<td>{breakStartTime.name} Break Started at {breakStartTime.breakStartedTime}</td>
+												<td><DeleteBtn onClick={() => this.deleteBreakStartTime(breakStartTime._id)} /></td>
 											</table>
 										</Link>
 									</ListItem>
 								))}
 							</List>
+
 						) : (
 							<h3>No Results Times To Display</h3>
 						)}
 						<a href="clockInTimes"><button>Clock-In Times</button></a>
-						<a href="breakStartTimes"><button>Break Start Times</button></a>
+                        <a href="clockOutTimes"><button>Clock-Out Times</button></a>
 						<a href="breakFinishTimes"><button>Break Finish Times</button></a>
 						<a href="user"><button>Employee Details</button></a>
 					</Col>
@@ -94,4 +95,4 @@ class ClockOutTimes extends React.Component {
 	}
 }
 
-export default ClockOutTimes;
+export default BreakStartTimes;

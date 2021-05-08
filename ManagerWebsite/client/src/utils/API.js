@@ -33,6 +33,38 @@ export default {
 	saveClockOutTime: function(clockOutTimeData) {
 		return axios.post('/api/ClockOutTimes', clockOutTimeData);
 	},
+	// Gets all clock in times
+	getBreakStartTimes: function() {
+		return axios.get('/api/BreakStartTimes');
+	},
+	// Gets the clock in time with the given id
+	getBreakStartTime: function(id) {
+		return axios.get('/api/BreakStartTimes/' + id);
+	},
+	// Deletes the clock in time with the given id
+	deleteBreakStartTime: function(id) {
+		return axios.delete('/api/BreakStartTimes/' + id);
+	},
+	// Saves a clock in time to the database (don't need)
+	saveBreakStartTime: function(breakStartTimeData) {
+		return axios.post('/api/BreakStartTimes', breakStartTimeData);
+	},
+	// Gets all clock in times
+	getBreakFinishTimes: function() {
+		return axios.get('/api/BreakFinishTimes');
+	},
+	// Gets the clock in time with the given id
+	getBreakFinishTime: function(id) {
+		return axios.get('/api/BreakFinishTimes/' + id);
+	},
+	// Deletes the clock in time with the given id
+	deleteBreakFinishTime: function(id) {
+		return axios.delete('/api/BreakFinishTimes/' + id);
+	},
+		// Saves a clock in time to the database (don't need)
+	saveBreakFinishTime: function(breakFinishTimeData) {
+		return axios.post('/api/BreakFinishTimes', breakFinishTimeData);
+	},
 	
 	
 
