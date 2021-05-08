@@ -13,6 +13,7 @@ import io.realm.Realm
 import io.realm.mongodb.User
 import io.realm.mongodb.mongo.options.UpdateOptions
 import io.realm.mongodb.sync.SyncConfiguration
+import kotlinx.android.synthetic.main.activity_clock_in.*
 import org.bson.Document
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -58,6 +59,7 @@ class BreakActivity : AppCompatActivity() {
             startBreak()
             // Disable start break button
             breakStartButton.isEnabled = false
+            // Re enable finish break button
             breakFinishButton.isEnabled = true
         }
 
@@ -106,20 +108,20 @@ class BreakActivity : AppCompatActivity() {
         // Get current time
         val currentTime = LocalTime.now()
 
-        // Find breakstarttime collection on mongodb
+        // Find breaktimes collection on mongodb
         val user = realmApp.currentUser()
         val mongoClient =
                 user!!.getMongoClient("mongodb-atlas") // service for MongoDB Atlas cluster containing custom user data
         val mongoDatabase =
                 mongoClient.getDatabase("tracker")
         val mongoCollection =
-                mongoDatabase.getCollection("breakstarttime")
+                mongoDatabase.getCollection("breaktimes")
 
         // Find document in collection with user's ID
         val query = Document("_partition", "user="+user.id)
         // Update document with the current time
         val update = Document("_partition", "user="+user.id).append("breakStartTime", currentTime.format
-        (DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)))
+        (DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM))).append("breakFinishTime", "Currently On Break")
                 .append("name", user?.customData?.get("name"))
         // Allow upsert (if document not found, create one)
         val updateOptions = UpdateOptions().upsert(true)
@@ -143,33 +145,44 @@ class BreakActivity : AppCompatActivity() {
         // Get current time
         val currentTime = LocalTime.now()
 
-        // Find breakfinishtime collection on mongodb
+        // Find breaktimes collection on mongodb
         val user = realmApp.currentUser()
         val mongoClient =
                 user!!.getMongoClient("mongodb-atlas") // service for MongoDB Atlas cluster containing custom user data
         val mongoDatabase =
                 mongoClient.getDatabase("tracker")
         val mongoCollection =
-                mongoDatabase.getCollection("breakfinishtime")
+                mongoDatabase.getCollection("breaktimes")
 
-        // Find document in collection with user's ID
+        // Find users document in collection with their id
         val query = Document("_partition", "user="+user.id)
-        // Update document with the current time
-        val update = Document("_partition", "user="+user.id).append("breakFinishTime", currentTime.format
-        (DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)))
-                .append("name", user?.customData?.get("name"))
-        // Allow upsert (if document not found, create one)
-        val updateOptions = UpdateOptions().upsert(true)
-        // Update/upsert document
-        mongoCollection?.updateOne(query, update, updateOptions)?.getAsync { task ->
-            if (task.isSuccess) {
-                if(task.get().upsertedId != null){
-                    Log.v("EXAMPLE", "upserted document")
-                } else {
-                    Log.v("EXAMPLE", "updated document")
-                }
+        mongoCollection?.findOne(query)?.getAsync { task ->
+            if (!task.isSuccess) {
+                Log.e("EXAMPLE", "failed to find document with: ${task.error}")
             } else {
-                Log.e("EXAMPLE", "failed to update document with: ${task.error}")
+                // Find breakStartTime in document
+                val breakStartTime = task.get()["breakStartTime"]
+
+                // Find document in collection with user's ID
+                val query = Document("_partition", "user=" + user.id)
+                // Update document with the current time
+                val update = Document("_partition", "user=" + user.id).append("breakStartTime", breakStartTime)
+                        .append("breakFinishTime", currentTime.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)))
+                        .append("name", user?.customData?.get("name"))
+                // Allow upsert (if document not found, create one)
+                val updateOptions = UpdateOptions().upsert(true)
+                // Update/upsert document
+                mongoCollection?.updateOne(query, update, updateOptions)?.getAsync { task ->
+                    if (task.isSuccess) {
+                        if (task.get().upsertedId != null) {
+                            Log.v("EXAMPLE", "upserted document")
+                        } else {
+                            Log.v("EXAMPLE", "updated document")
+                        }
+                    } else {
+                        Log.e("EXAMPLE", "failed to update document with: ${task.error}")
+                    }
+                }
             }
         }
     }
