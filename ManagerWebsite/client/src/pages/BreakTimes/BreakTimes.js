@@ -86,6 +86,7 @@ class BreakTimes extends React.Component {
 						)}
 						<a href="clockInTimes"><button>Clock-In Times</button></a>
                         <a href="clockOutTimes"><button>Clock-Out Times</button></a>
+						<a href="isSick"><button>Employee Sick List</button></a>
 						<a href="user"><button>Employee Details</button></a>
 					</Col>
 				</Row>

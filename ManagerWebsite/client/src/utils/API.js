@@ -49,6 +49,22 @@ export default {
 	saveBreakTime: function(breakTimeData) {
 		return axios.post('/api/BreakTimes', breakTimeData);
 	},
+	// Gets all break times
+	getIsSicks: function() {
+		return axios.get('/api/IsSick');
+	},
+	// Gets the break time with the given id
+	getIsSick: function(id) {
+		return axios.get('/api/IsSick/' + id);
+	},
+	// Deletes the break time with the given id
+	deleteIsSick: function(id) {
+		return axios.delete('/api/IsSick/' + id);
+	},
+	// Saves a break time to the database (don't need)
+	saveIsSick: function(isSickData) {
+		return axios.post('/api/IsSick', isSickData);
+	},
 	
 	
 	// Gets all users
