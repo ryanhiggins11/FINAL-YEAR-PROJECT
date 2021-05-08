@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
+import android.nfc.Tag
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -168,9 +169,9 @@ class ClockInActivity : AppCompatActivity() {
         val queryOne = Document("_partition", "user="+user.id)
         // Update document with the current time
         val updateClockInTimes = Document("_partition", "user="+user.id)
-                                    .append("clockedInTime", currentClockInTime.format
-                                            (DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)))
-                                    .append("name", user?.customData?.get("name"))
+                .append("clockedInTime", currentClockInTime.format
+                (DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)))
+                .append("name", user?.customData?.get("name"))
         // Allow upsert (if document not found, create one)
         val updateOptions = UpdateOptions().upsert(true)
         // Update/upsert document
@@ -220,29 +221,23 @@ class ClockInActivity : AppCompatActivity() {
                 mongoDatabase.getCollection("isclockedin")
 
         // Find users document in collection with their id
-        val queryTwo = Document("_partition", "user="+user.id)
-        mongoCollection?.findOne(queryTwo)?.getAsync { task ->
+        val query = Document("_partition", "user="+user.id)
+        mongoCollection?.findOne(query)?.getAsync { task ->
             if (!task.isSuccess) {
                 Log.e("EXAMPLE", "failed to find document with: ${task.error}")
             } else {
                 try {
-                    // Wait for 1 seconds before checking data in mongodb
-                    Handler().postDelayed(
-                        {
-                            // Clocked in true or false in document
-                            val clockedIn = task.get()["clockedIn"]
-                            // Output is clocked in true or false to console
-                            Log.v("EXAMPLE", "is user clocked in: $clockedIn")
-                            // Go to clock out activity if employee is already clocked in
-                            if(clockedIn == true){
-                                startActivity(Intent(this@ClockInActivity,
-                                        ClockOutActivity::class.java))
-                            }
-                            // Enable clock in button if employee is not clocked in
-                            button_clockin.isEnabled = true
-                        },
-                        1000 // value in milliseconds
-                    )
+                    // Clocked in true or false in document
+                    val clockedIn = task.get()["clockedIn"]
+                    // Output is clocked in true or false to console
+                    Log.v("EXAMPLE", "is user clocked in: $clockedIn")
+                    // Go to clock out activity if employee is already clocked in
+                    if(clockedIn == true){
+                        startActivity(Intent(this@ClockInActivity,
+                                ClockOutActivity::class.java))
+                    }
+                    // Enable clock in button if employee is not clocked in
+                    button_clockin.isEnabled = true
                 }catch(e:NullPointerException){
                     // Find document in collection with user's ID
                     val query = Document("_partition", "user="+user.id)
@@ -264,11 +259,11 @@ class ClockInActivity : AppCompatActivity() {
                         }
                     }// Wait for 1 seconds for data input above to go to mongodb
                     Handler().postDelayed(
-                        {
-                            // Enable clock in button if employee is not clocked in
-                            button_clockin.isEnabled = true
-                        },
-                        1000 // value in milliseconds
+                            {
+                                // Enable clock in button if employee is not clocked in
+                                button_clockin.isEnabled = true
+                            },
+                            1000 // value in milliseconds
                     )
                 }
             }
@@ -280,12 +275,12 @@ class ClockInActivity : AppCompatActivity() {
     private fun getLastLocation() {
         // Check permission
         if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
+                        this,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
         ) {
             return
         }
@@ -348,8 +343,8 @@ class ClockInActivity : AppCompatActivity() {
 
     // Shows employee some options to select, alongside a toast notification
     private fun showSnackBar(
-        mainTextStringId: String, actionStringId: String,
-        listener: View.OnClickListener
+            mainTextStringId: String, actionStringId: String,
+            listener: View.OnClickListener
     ) {
         Toast.makeText(this@ClockInActivity, mainTextStringId, Toast.LENGTH_LONG).show()
     }
@@ -357,8 +352,8 @@ class ClockInActivity : AppCompatActivity() {
     // Check if permissions have been granted by employee
     private fun checkPermissions(): Boolean {
         val permissionState = ActivityCompat.checkSelfPermission(
-            this,
-            Manifest.permission.ACCESS_COARSE_LOCATION
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
         )
         return permissionState == PackageManager.PERMISSION_GRANTED
     }
@@ -366,24 +361,24 @@ class ClockInActivity : AppCompatActivity() {
     // Requests permissions to be granted to this application
     private fun startLocationPermissionRequest() {
         ActivityCompat.requestPermissions(
-            this@ClockInActivity,
-            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
-            REQUEST_PERMISSIONS_REQUEST_CODE
+                this@ClockInActivity,
+                arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+                REQUEST_PERMISSIONS_REQUEST_CODE
         )
     }
 
     // Request use of location
     private fun requestPermissions() {
         val shouldProvideRationale = ActivityCompat.shouldShowRequestPermissionRationale(
-            this,
-            Manifest.permission.ACCESS_COARSE_LOCATION
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
         )
         if (shouldProvideRationale) {
             Log.i(TAG, "Displaying permission rationale to provide additional context.")
             showSnackBar("Location permission is needed for core functionality", "Okay",
-                View.OnClickListener {
-                    startLocationPermissionRequest()
-                })
+                    View.OnClickListener {
+                        startLocationPermissionRequest()
+                    })
 
             // Disable clock in button if location permission is denied
             button_clockin.isEnabled = false
@@ -395,8 +390,8 @@ class ClockInActivity : AppCompatActivity() {
 
     // Check if employee accepted or denied request for permissions
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>,
-        grantResults: IntArray
+            requestCode: Int, permissions: Array<String>,
+            grantResults: IntArray
     ) {
         Log.i(TAG, "onRequestPermissionResult")
         if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
@@ -413,18 +408,18 @@ class ClockInActivity : AppCompatActivity() {
 
                 else -> {
                     showSnackBar("Permission was denied", "Settings",
-                        View.OnClickListener {
-                            // Build intent that displays the App settings screen.
-                            val intent = Intent()
-                            intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                            val uri = Uri.fromParts(
-                                "package",
-                                Build.DISPLAY, null
-                            )
-                            intent.data = uri
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                            startActivity(intent)
-                        }
+                            View.OnClickListener {
+                                // Build intent that displays the App settings screen.
+                                val intent = Intent()
+                                intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                                val uri = Uri.fromParts(
+                                        "package",
+                                        Build.DISPLAY, null
+                                )
+                                intent.data = uri
+                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                startActivity(intent)
+                            }
                     )
                 }
             }
