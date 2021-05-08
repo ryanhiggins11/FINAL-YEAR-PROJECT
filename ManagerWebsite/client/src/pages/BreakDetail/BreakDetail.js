@@ -4,23 +4,23 @@ import { Col, Row, Container } from '../../components/Grid';
 import Jumbotron from '../../components/Jumbotron';
 import API from '../../utils/API';
 
-class BreakStartDetail extends Component {
+class BreakDetail extends Component {
 	//object declared breaktime
 	state = {
-		breakStartTime: {}
+		breakTime: {}
 	};
 
-	//gets clock out time
+	//gets break time
 	componentDidMount() {
-		API.getBreakStartTime(this.props.match.params.id)
-			.then(res => this.setState({ breakStartTime: res.data }))
+		API.getBreakTime(this.props.match.params.id)
+			.then(res => this.setState({ breakTime: res.data }))
 			.catch(err => console.log(err));
 	}
 
 	/*
 	*renders images
-	*displays name of employee and then displays clock out time
-	*Back button to clock out times
+	*displays name of employee and then displays break time
+	*Back button to break times
 	*/
 	render() {
 		return (
@@ -36,7 +36,8 @@ class BreakStartDetail extends Component {
 
 						<Jumbotron>
 							<table>
-								<h2>{this.state.breakStartTime.name} - Had a break from work at - {this.state.breakStartTime.breakStartedTime}</h2>
+								<h2>{this.state.breakTime.name} - Had a break from work at - {this.state.breakTime.breakStartTime}</h2>
+								<h2>{this.state.breakTime.name} - Finished their break from work at - {this.state.breakTime.breakFinishTime}</h2>
 							</table>
 						</Jumbotron>
 					</Col>
@@ -44,7 +45,7 @@ class BreakStartDetail extends Component {
 
 				<Row>
 					<Col size="md-2">
-						<Link to="/breakStartTimes">← Back to Break Start Times</Link>
+						<Link to="/breakTimes">← Back to Break Times</Link>
 					</Col>
 				</Row>
 			</Container>
@@ -52,4 +53,4 @@ class BreakStartDetail extends Component {
 	}
 }
 
-export default BreakStartDetail;
+export default BreakDetail;

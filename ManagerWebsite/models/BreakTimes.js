@@ -4,17 +4,21 @@ const Schema = mongoose.Schema;
 /*
 * This will resemble a schema of what to expect from the user when adding information to our application.
 */
-const breakStartTimeSchema = new Schema({
+const breakTimeSchema = new Schema({
 	name: {
 		type: String,
 		required: true
 	},
-	breakStartedTime: {
+	breakStartTime: {
+		type: String,
+		required: true
+	},
+	breakFinishTime: {
 		type: String,
 		required: true
 	}
 });
 
-const BreakStartTime = mongoose.model('BreakStartTime', breakStartTimeSchema);
+const BreakTime = mongoose.model('BreakTime', breakTimeSchema);
 
-module.exports = BreakStartTime;
+module.exports = BreakTime;

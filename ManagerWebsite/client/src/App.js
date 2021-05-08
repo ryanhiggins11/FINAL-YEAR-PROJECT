@@ -6,10 +6,8 @@ import ClockOutDetail from './pages/ClockOutDetail';
 import NoMatch from './pages/NoMatch';
 import Navbar from './components/Nav/Nav';
 import ClockOutTimes from './pages/ClockOutTimes';
-import BreakStartTimes from './pages/BreakStartTimes';
-import BreakStartDetail from './pages/BreakStartDetail';
-import BreakFinishTimes from './pages/BreakFinishTimes';
-import BreakFinishDetail from './pages/BreakFinishDetail';
+import BreakTimes from './pages/BreakTimes';
+import BreakDetail from './pages/BreakDetail';
 import User from './pages/User';
 
 /*
@@ -25,10 +23,8 @@ const App = () => (
 				<Route exact path="/clockInTimes/:id" component={ClockInDetail} />
 				<Route exact path="/clockOutTimes" component={ClockOutTimes} />
 				<Route exact path="/clockOutTimes/:id" component={ClockOutDetail}/>
-				<Route exact path="/breakStartTimes/:id" component={BreakStartDetail} />
-				<Route exact path="/breakStartTimes" component={BreakStartTimes} />
-                <Route exact path="/breakFinishTimes/:id" component={BreakFinishDetail} />
-				<Route exact path="/breakFinishTimes" component={BreakFinishTimes} />
+				<Route exact path="/breakTimes/:id" component={BreakDetail} />
+				<Route exact path="/breakTimes" component={BreakTimes} />
 				<Route exact path="/user" component={User}/>
 				<Route component={NoMatch} />
 			</Switch>
