@@ -51,7 +51,7 @@ class ClockInTimes extends React.Component {
 	 *displays clock in times
 	 *gets clock in times
 	 *delete button if you want to remove a clock in time
-	 *two buttons to bring to clock out and employee details page
+	 *four buttons to bring to clock out times, break times, employee sick list and employee details page
 	 */
 	render() {
 		return (

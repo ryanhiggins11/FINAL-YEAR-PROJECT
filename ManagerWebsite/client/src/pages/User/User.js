@@ -51,7 +51,7 @@ class User extends Component {
 	*Gets employees Email, First Name, Surname, DOB and Emergency Contact Number
 	*Delete button
 	*displays these all in a table
-	*two buttons to bring back to clockin times and clockout times
+	*four buttons to bring to clock in times, clock out times, break times and employee sick list
 	*/
 	render() {
 		console.log(this.state.User)
@@ -81,8 +81,8 @@ class User extends Component {
 					
 					<a href="clockOutTimes"><button>Clock-Out Times</button></a>
 					<a href="clockInTimes"><button>Clock-In Times</button></a>
-					<a href="breakStartTimes"><button>Break Start Times</button></a>
-					<a href="breakFinishTimes"><button>Break Finish Times</button></a>
+					<a href="breakTimes"><button>Break Times</button></a>
+					<a href="isSick"><button>Employee Sick List</button></a>
 				
 				
 			</Container>

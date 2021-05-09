@@ -9,7 +9,6 @@ import ClockOutTimes from './pages/ClockOutTimes';
 import BreakTimes from './pages/BreakTimes';
 import BreakDetail from './pages/BreakDetail';
 import IsSick from './pages/IsSick';
-import IsSickDetail from './pages/IsSickDetail';
 import User from './pages/User';
 
 /*
@@ -27,7 +26,6 @@ const App = () => (
 				<Route exact path="/clockOutTimes/:id" component={ClockOutDetail}/>
 				<Route exact path="/breakTimes/:id" component={BreakDetail} />
 				<Route exact path="/breakTimes" component={BreakTimes} />
-				<Route exact path="/isSick/:id" component={IsSickDetail} />
 				<Route exact path="/isSick" component={IsSick} />
 				<Route exact path="/user" component={User}/>
 				<Route component={NoMatch} />
