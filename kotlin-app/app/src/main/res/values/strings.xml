@@ -49,4 +49,7 @@
     <string name="edit_employees">Edit Employees Details</string>
     <string name="add_employees">Add an Employee</string>
     <string name="confirm_password">Re-enter Password</string>
+    <string name="sickYes">Yes</string>
+    <string name="sickNo">No</string>
+    <string name="is_employee_sick">Are you able to make work today?</string>
 </resources>
