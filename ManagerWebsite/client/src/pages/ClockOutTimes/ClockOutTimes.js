@@ -49,7 +49,7 @@ class ClockOutTimes extends React.Component {
 	 *displays clock out times
 	 *gets clock out times
 	 *delete button if you want to remove a clock out time
-	 *two buttons to bring to clock in times and employee details page
+	 *four buttons to bring to clock in times, break times, employee sick list and employee details page
 	 */
 	render() {
 		return (

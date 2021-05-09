@@ -50,7 +50,7 @@ class BreakTimes extends React.Component {
 	 *displays break times
 	 *gets break times
 	 *delete button if you want to remove a break time
-	 *three buttons to bring to clock in times, clock out times and employee details page
+	 *four buttons to bring to clock in times, clock out times, employee sick list and employee details page
 	 */
 	render() {
 		return (

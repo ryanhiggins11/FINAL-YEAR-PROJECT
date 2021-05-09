@@ -4,17 +4,17 @@ const Schema = mongoose.Schema;
 /*
 * This will resemble a schema of what to expect from the user when adding information to our application.
 */
-const isSicksSchema = new Schema({
-	name: {
-		type: String,
-		required: true
-	},
-	isEmployeeSick: {
-		type: String,
-		required: true
-	}
+const isSickSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    isEmployeeSick: {
+        type: String,
+        required: true
+    }
 });
 
-const IsSicks = mongoose.model('IsSicks', isSicksSchema);
+const IsSick = mongoose.model('IsSick', isSickSchema);
 
-module.exports = IsSicks;
+module.exports = IsSick;
