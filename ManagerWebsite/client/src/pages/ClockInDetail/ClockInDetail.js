@@ -32,7 +32,7 @@ class ClockInDetail extends Component {
 						
 						<div>
 							<header>
-                				<img width="30%" src = "../images/employee.png" alt="Details Banner"/>
+                				<img width="30%" src = "../images/clockIn.png" alt="Details Banner"/>
             				</header>
 						</div>
 

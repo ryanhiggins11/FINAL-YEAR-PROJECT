@@ -30,7 +30,7 @@ class BreakDetail extends Component {
 
 						<div>
 							<header>
-                				<img width="30%" src = "../images/employee.png" alt="Details Banner"/>
+                				<img width="30%" src = "../images/breaks.png" alt="Banner"/>
             				</header>
 						</div>
 
