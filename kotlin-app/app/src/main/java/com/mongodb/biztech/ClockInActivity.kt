@@ -32,10 +32,11 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 /*
-* ClockInActivity: Allow an employee to clock in and
-* reset their password. The time that the employee
-* clocked in to work at is pushed to mongodb for the
-* manager to view
+* ClockInActivity: Allow an employee to clock in,
+* reset their password, and notify the manager if
+* they are sick or not. The time that the employee
+* clocked in to work at and if the employee is sick
+* or not is pushed to mongodb for the manager to view
 */
 class ClockInActivity : AppCompatActivity() {
     private var clockInRealm: Realm? = null
@@ -115,6 +116,27 @@ class ClockInActivity : AppCompatActivity() {
         resetPasswordButton.setOnClickListener{
             val intent = Intent(this@ClockInActivity, ResetPasswordActivity::class.java)
             startActivity(intent)
+        }
+
+        val isNotSickButton = findViewById<Button>(R.id.button_sick_yes)
+        val isSickButton = findViewById<Button>(R.id.button_sick_no)
+        // Buttons will be enabled after app checks if employee is already clocked in
+        isNotSickButton.isEnabled = false
+        isSickButton.isEnabled = false
+
+        isNotSickButton.setOnClickListener{
+            isNotSick()
+            // Disable buttons when clicked
+            isNotSickButton.isEnabled = false
+            isSickButton.isEnabled = false
+        }
+
+        isSickButton.setOnClickListener{
+            isSick()
+            // Disable buttons when clicked
+            isNotSickButton.isEnabled = false
+            isSickButton.isEnabled = false
+            clockInButton.isEnabled = false
         }
     }
 
@@ -236,8 +258,10 @@ class ClockInActivity : AppCompatActivity() {
                         startActivity(Intent(this@ClockInActivity,
                                 ClockOutActivity::class.java))
                     }
-                    // Enable clock in button if employee is not clocked in
+                    // Enable clock in, and sick feature buttons if employee is not clocked in
                     button_clockin.isEnabled = true
+                    button_sick_yes.isEnabled = true
+                    button_sick_no.isEnabled = true
                 }catch(e:NullPointerException){
                     // Find document in collection with user's ID
                     val query = Document("_partition", "user="+user.id)
@@ -260,14 +284,87 @@ class ClockInActivity : AppCompatActivity() {
                     }// Wait for 1 seconds for data input above to go to mongodb
                     Handler().postDelayed(
                             {
-                                // Enable clock in button if employee is not clocked in
+                                // Enable clock in, and sick feature buttons if employee is not clocked in
                                 button_clockin.isEnabled = true
+                                button_sick_yes.isEnabled = true
+                                button_sick_no.isEnabled = true
                             },
                             1000 // value in milliseconds
                     )
                 }
             }
         }
+    }
+
+    // Sickness Feature
+    // Update employees document in isSicks collection to Yes
+    private fun isSick(){
+        // Find issick collection on mongodb
+        val user = realmApp.currentUser()
+        val mongoClient =
+                user!!.getMongoClient("mongodb-atlas") // service for MongoDB Atlas cluster containing custom user data
+        val mongoDatabase =
+                mongoClient.getDatabase("tracker")
+        val mongoCollection =
+                mongoDatabase.getCollection("issicks")
+
+        // Find document in collection with user's ID
+        val query = Document("_partition", "user="+user.id)
+        // Update document with Yes
+        val updateIsSick = Document("_partition", "user="+user.id)
+                .append("isEmployeeSick", "Yes")
+                .append("name", user?.customData?.get("name"))
+        // Allow upsert (if document not found, create one)
+        val updateOptions = UpdateOptions().upsert(true)
+        // Update/upsert document
+        mongoCollection?.updateOne(query, updateIsSick, updateOptions)?.getAsync { task ->
+            if (task.isSuccess) {
+                if(task.get().upsertedId != null){
+                    Log.v("EXAMPLE", "upserted document")
+                } else {
+                    Log.v("EXAMPLE", "updated document")
+                }
+            } else {
+                Log.e("EXAMPLE", "failed to update document with: ${task.error}")
+            }
+        }
+
+        Toast.makeText(baseContext, "Manager notified!", Toast.LENGTH_LONG).show()
+    }
+
+    // Update employees document in isSick collection to No
+    private fun isNotSick(){
+        // Find issick collection on mongodb
+        val user = realmApp.currentUser()
+        val mongoClient =
+                user!!.getMongoClient("mongodb-atlas") // service for MongoDB Atlas cluster containing custom user data
+        val mongoDatabase =
+                mongoClient.getDatabase("tracker")
+        val mongoCollection =
+                mongoDatabase.getCollection("issicks")
+
+        // Find document in collection with user's ID
+        val query = Document("_partition", "user="+user.id)
+        // Update document with No
+        val updateIsSick = Document("_partition", "user="+user.id)
+                .append("isEmployeeSick", "No")
+                .append("name", user?.customData?.get("name"))
+        // Allow upsert (if document not found, create one)
+        val updateOptions = UpdateOptions().upsert(true)
+        // Update/upsert document
+        mongoCollection?.updateOne(query, updateIsSick, updateOptions)?.getAsync { task ->
+            if (task.isSuccess) {
+                if(task.get().upsertedId != null){
+                    Log.v("EXAMPLE", "upserted document")
+                } else {
+                    Log.v("EXAMPLE", "updated document")
+                }
+            } else {
+                Log.e("EXAMPLE", "failed to update document with: ${task.error}")
+            }
+        }
+
+        Toast.makeText(baseContext, "Great to hear!", Toast.LENGTH_LONG).show()
     }
 
     // https://www.tutorialspoint.com/how-to-track-the-current-location-latitude-and-longitude-in-an-android-device-using-kotlin

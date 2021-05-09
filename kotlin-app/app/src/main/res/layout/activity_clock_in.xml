@@ -6,8 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".ClockInActivity">
 
-    <!-- Clock in Page where employees can clock in
-            and reset their password -->
+    <!-- Clock in Page where employees can clock in,
+         reset their password, and notify the manager
+                   if they are sick or not -->
 
     <TextView
         android:id="@+id/ClockinTitle"
@@ -20,6 +21,7 @@
         android:text="@string/welcome_to_biztech"
         android:textColor="@color/blackOlive"
         android:textSize="35sp"
+        android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/imageView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,21 +33,21 @@
         android:layout_width="289dp"
         android:layout_height="245dp"
         android:layout_marginStart="93dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="94dp"
-        android:layout_marginBottom="80dp"
-        app:layout_constraintBottom_toTopOf="@+id/button_clockin"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintHorizontal_bias="0.484"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ClockinTitle"
         app:srcCompat="@drawable/clock" />
 
     <Button
         android:id="@+id/button_clockin"
         android:layout_width="153dp"
         android:layout_height="58dp"
-        android:layout_marginBottom="132dp"
-        android:text="@string/clockIn"
+        android:layout_marginBottom="200dp"
         android:background="@color/lightBlue"
+        android:text="@string/clockIn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -54,13 +56,52 @@
         android:id="@+id/button_password_reset"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
+        android:layout_marginBottom="120dp"
+        android:background="@color/lightBlue"
         android:padding="1dp"
         android:text="@string/reset_password"
-        android:background="@color/lightBlue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/IsEmployeeSick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="65dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="65dp"
+        android:text="@string/is_employee_sick"
+        android:textAlignment="center"
+        android:textColor="@color/blackOlive"
+        android:textSize="23sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.529"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_password_reset" />
+
+    <Button
+        android:id="@+id/button_sick_yes"
+        android:layout_width="153dp"
+        android:layout_height="58dp"
+        android:layout_marginBottom="4dp"
+        android:background="@color/lightGreen"
+        android:text="@string/sickYes"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.062"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button_sick_no"
+        android:layout_width="153dp"
+        android:layout_height="58dp"
+        android:layout_marginBottom="4dp"
+        android:background="@color/lightRed"
+        android:text="@string/sickNo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.937"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
