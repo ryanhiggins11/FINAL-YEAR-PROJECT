@@ -61,7 +61,7 @@ class ClockInTimes extends React.Component {
 					
 					<div>
 						<header>
-                			<img width="30%" src = "./images/Clockin-Banner.png" alt="Clock in Banner"/>
+                			<img width="30%" src = "./images/clockIn.png" alt="Clock in Banner"/>
             			</header>
 					</div>
 

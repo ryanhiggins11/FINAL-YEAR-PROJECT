@@ -60,7 +60,7 @@ class ClockOutTimes extends React.Component {
 					
 					<div classname="banner-out">
 						<header>
-                			<img width="30%" src = "./images/Clockout-Banner.png" alt="Clock out Banner"/>
+                			<img width="30%" src = "./images/clockOut.png" alt="Clock out Banner"/>
             			</header>
 					</div>
 

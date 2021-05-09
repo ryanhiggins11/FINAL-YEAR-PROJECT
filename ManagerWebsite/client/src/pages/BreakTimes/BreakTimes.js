@@ -61,7 +61,7 @@ class BreakTimes extends React.Component {
 					
 					<div classname="banner-out">
 						<header>
-                			<img width="30%" src = "./images/Clockout-Banner.png" alt="Clock out Banner"/>
+                			<img width="30%" src = "./images/breaks.png" alt="breaks"/>
             			</header>
 					</div>
 

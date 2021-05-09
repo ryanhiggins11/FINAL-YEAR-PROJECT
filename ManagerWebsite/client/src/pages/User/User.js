@@ -56,7 +56,12 @@ class User extends Component {
 	render() {
 		console.log(this.state.User)
 		return (
-			<Container fluid>		
+			<Container fluid>
+					<div classname="banner-out">
+						<header>
+                			<img width="30%" src = "./images/employees.png" alt="breaks"/>
+            			</header>
+					</div>		
 						<h1>Employee Details</h1>
 						{this.state.User.length ? (
 							<List>
