@@ -415,7 +415,7 @@ class ClockInActivity : AppCompatActivity() {
                         Log.v("EXAMPLE", "successfully found longitude: $longitude")
 
                         // Enable button if employee location is equal to latitude & longitude in document
-                        //button_clockin.isEnabled = latLocation == latitude && longLocation == longitude
+                        button_clockin.isEnabled = latLocation == latitude && longLocation == longitude
                     } else {
                         Log.e("EXAMPLE", "failed to find document with: ${task.error}")
                     }
@@ -425,7 +425,7 @@ class ClockInActivity : AppCompatActivity() {
                 showMessage("No location detected. Make sure location is enabled on the device.")
 
                 // Disable clock in button if location is not turned on
-                //button_clockin.isEnabled = false
+                button_clockin.isEnabled = false
             }
         }
     }
