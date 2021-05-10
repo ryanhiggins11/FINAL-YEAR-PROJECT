@@ -413,12 +413,16 @@ class ClockInActivity : AppCompatActivity() {
                         Log.v("EXAMPLE", "successfully found longitude: $longitude")
 
                         // Enable button if employee location is equal to latitude & longitude in document
+
+                        button_clockin.isEnabled = latLocation == latitude && longLocation == longitude
+
                         if(latLocation == latitude && longLocation == longitude){
                             button_clockin.isEnabled
                         }
                         else{
                             Toast.makeText(baseContext, "Your location is not in the workplace, please close app and try again", Toast.LENGTH_LONG).show()
                         }
+
                     } else {
                         Log.e("EXAMPLE", "failed to find document with: ${task.error}")
                     }
